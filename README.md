@@ -18,7 +18,7 @@ Discord App for Spirit island
 - -minor [card name]
 - -major [card name]
 - -unique [card name]
-- -uniques [spirit name] \
+- -uniques [spirit name]
 - -blight [card name]
 - -board [board letter/name]
 - -event [event name]

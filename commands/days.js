@@ -17,7 +17,7 @@ module.exports = {
             }
             else{
                 numPlayers = parseInt(args[0]) ? parseInt(args[0]) : 1;
-                smallDays = (numPlayers < 2);
+                smallDays = (numPlayers < 3);
             }
             let message = "";
             if (numPlayers == 1){

@@ -1,4 +1,4 @@
-var help = "See [Github link](<https://github.com/SpeedyOlrac/SI_Card_Bot>) for invite\
+var help = "See [Github link](<https://github.com/thirdratecyberpunk/SI_Card_Bot>) for invite\
 	\n\nList of commands: \
 	``` -search [search words]\
 	\n -draw [card type] [amount (<=10)]\

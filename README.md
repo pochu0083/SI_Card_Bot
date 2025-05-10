@@ -1,7 +1,7 @@
 # SI_Card_Bot
 Discord App for Spirit island
 
-**Invite code**: https://discord.com/api/oauth2/authorize?client_id=722800660302528533&permissions=342016&scope=bot
+**Invite code**: https://discord.com/oauth2/authorize?client_id=1120665987331661904&permissions=292058114048&integration_type=0&scope=bot
 
 ### How to run the bot - 
 

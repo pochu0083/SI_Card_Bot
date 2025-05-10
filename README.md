@@ -13,7 +13,6 @@ Discord App for Spirit island
 ### Bot Commands 
 - -search [search words]
 - -draw [card type] [amount (<=10)]
-- -take [card type]
 - -power [card name]
 - -minor [card name]
 - -major [card name]
@@ -28,6 +27,7 @@ Discord App for Spirit island
 - -random adversary (min difficulty) (max difficulty)
 - -random double (min difficulty) (max difficulty)
 - -random scenario
+- -random board (all/thematic (defaults to regular))
 - -spirit (front/back) [keywords]
 - -adversary (name)
 - -aspect (spirit or aspect) [aspect keywords] [number of card (i.e. Locus part 1/2)]

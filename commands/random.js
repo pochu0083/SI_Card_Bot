@@ -2,11 +2,15 @@ const { scenario } = require('./scenarioNames.js');
 
 const adversary = require('./AdversaryNames.js').ad;
 const spirits = require ('./spiritNames.js').spirits;
+const regularBoards = require ('./boardNames.js').regularBoards;
+const thematicBoards = require ('./boardNames.js').thematicBoards;
+const allBoards = require ('./boardNames.js').allBoards;
+
 const complexities = require('./complexities.js').complexities;
 
 module.exports = {
 	name: 'random',
-	description: 'Get a random spirit, single adversary or scenario',
+	description: 'Get a random spirit, single/double adversary, board or scenario',
 	public: true,
 	async execute(msg, args) {
             if(args[0]){
@@ -36,13 +40,19 @@ module.exports = {
                         answer = chooseScenario();
                         await sendMessage(msg, answer);
                         break;
+                    case 'board':
+                        // check if user has specified thematic or not
+                        let boardType = args[1] ? args[1] : 'regular';
+                        answer = chooseBoard(boardType);
+                        await sendMessage(msg, answer);
+                        break;
                     default:
-                        await msg.channel.send("Do you want a random [spirit], [adversary] or [scenario]?");
+                        await msg.channel.send("Do you want a random [spirit], [adversary], [double], [board] or [scenario]?");
                         break;
                 }
             }
             else{
-                await msg.channel.send("Do you want a random [spirit], [adversary] or [scenario]?")
+                await msg.channel.send("Do you want a random [spirit], [adversary], [double], [board] or [scenario]?");
             }
 }};
 
@@ -217,4 +227,30 @@ function chooseDoubleAdversary(minDifficulty = 1, maxDifficulty = 20){
 function chooseScenario(){
     let s = Math.floor(Math.random() * scenario.length);
     return  [scenario[s].name, scenario[s].linkBack];
+}
+
+/**
+ * returns a random board
+ * @param {*} selection 
+ * @param {*} min 
+ * @param {*} max 
+ * @returns 
+ */
+function chooseBoard(boardType = 'regular'){
+    let board;
+    if (boardType == 'all'){
+        board = allBoards;
+    }
+    else if(boardType == 'thematic'){
+        board = thematicBoards;
+    }
+    else{
+        board = regularBoards;
+    }
+    console.log(board);
+    console.log(board.length);
+    let s = Math.floor(Math.random() * board.length);
+    console.log(s)
+    console.log(board[s].name, board[s].link);
+    return  [board[s].name, board[s].link];
 }

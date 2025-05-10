@@ -20,6 +20,11 @@ module.exports = {
 
 };
 
+/**
+ * TODO: modify this to use the boardNames constants
+ * @param {*} b 
+ * @returns 
+ */
 function searchBoards(b)
 {
 

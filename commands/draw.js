@@ -26,7 +26,8 @@ module.exports = {
         }
 	},
     getRandomDraws,
-    capitalizeTheFirstLetterOfEachWord
+    capitalizeTheFirstLetterOfEachWord,
+    getDaysThatNeverWere,
 };
 
 /**
@@ -57,7 +58,7 @@ function getRandomDraws(drawnType, drawAmount = 4){
             if (list.length > 1){
                 var message = "";
                 for (const message_ind of list){
-                    message += "* " + message_ind + "\n";
+                    message += "\n* " + message_ind;
                 }
                 return message;
             }
@@ -73,6 +74,19 @@ function getRandomDraws(drawnType, drawAmount = 4){
     else{
         throw new Error('Please specify a type of card to draw (minor, major, fear or event) (defaults to 4 cards drawn).');
     }
+}
+
+/**
+ * returns a formatted Days That Never Were list
+ * @param {*} smallDays 
+ */
+function getDaysThatNeverWere(smallDays = true){
+    let numToDraw = smallDays ? 4 : 6;
+    let message = "Majors:"
+    message += getRandomDraws("major", numToDraw);
+    message += "\nMinors:"
+    message += getRandomDraws("minor", numToDraw);
+    return message;
 }
 
 /**

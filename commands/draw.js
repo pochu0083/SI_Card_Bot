@@ -81,10 +81,10 @@ function getRandomDraws(drawnType, drawAmount = 4){
  * @param {*} smallDays -> is the game less than 3 players?
  */
 function getDaysThatNeverWere(smallDays = true){
-    let numToDraw = smallDays ? 6 : 4:
-    let message = "Majors:"
+    let numToDraw = smallDays ? 6 : 4;
+    let message = "Majors:";
     message += getRandomDraws("major", numToDraw);
-    message += "\nMinors:"
+    message += "\nMinors:";
     message += getRandomDraws("minor", numToDraw);
     return message;
 }

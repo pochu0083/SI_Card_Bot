@@ -78,10 +78,10 @@ function getRandomDraws(drawnType, drawAmount = 4){
 
 /**
  * returns a formatted Days That Never Were list
- * @param {*} smallDays 
+ * @param {*} smallDays -> is the game less than 3 players?
  */
 function getDaysThatNeverWere(smallDays = true){
-    let numToDraw = smallDays ? 4 : 6;
+    let numToDraw = smallDays ? 6 : 4:
     let message = "Majors:"
     message += getRandomDraws("major", numToDraw);
     message += "\nMinors:"

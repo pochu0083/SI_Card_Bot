@@ -35,6 +35,7 @@ Discord App for Spirit island
 - -healing [keyword]
 - -incarna [keyword] (front/back)
 - -scenario (front/back) [keywords]
+- -invaderdeck (leadingAdversary leadingAdversaryLevel supportingAdversary supportingAdversaryLevel)
  
 ### TODO
 - Implement levenshtein to all card search

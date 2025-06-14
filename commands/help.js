@@ -24,6 +24,7 @@ var help = "See [Github link](<https://github.com/thirdratecyberpunk/SI_Card_Bot
 	\n -healing [keyword] \
 	\n -incarna [keyword] (front/back) \
 	\n -scenario (front/back) [keywords] \
+	\n -invaderdeck (leadingAdversary leadingAdversaryLevel supportingAdversary supportingAdversaryLevel) \
 	```\
 	"
 

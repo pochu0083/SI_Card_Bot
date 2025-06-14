@@ -90,11 +90,6 @@ const ADV = {
       return d;
     },
     6: (d) => {
-    //   const index = d.indexOf(1);
-    //   if (index != -1){
-    //       d.splice(index, 1);
-    //   }
-    //   return d;
         let newarr = d.filter(a => a !== 1);
         return newarr;
     },
@@ -250,19 +245,10 @@ const ADV = {
       const index = d.lastIndexOf(1);
       if (index !== -1) {
         const stage3index = d.lastIndexOf(3);
-        console.log('last stage 3 at ' + stage3index);
         if (stage3index > -1){
             // replaces the last stage 1 card with the last stage 3 card
-            d.splice(index, 1, 3);
-            // removes last stage 3 card
-            d.splice(stage3index, 1);
+            d[index] = d.splice(stage3index,1).shift();
         }
-        // d[index] = d.pop();
-        // console.log(d.length);
-        // console.log(d[d.length - 1]);
-        // if (d[d.length] !== 3) {
-        //   throw new Error("Bad 3 wasn't found");
-        // }
       }
       return d;
     },

@@ -61,6 +61,12 @@ describe('Deck class', () => {
     expect(deck.cards).toEqual([1, 1, 2, 2, 1, 'C', 2 , 3, 3, 3, 3, 3]);
   });
 
+  it('should apply Scotland 4 correctly', () => {
+    const deck = new Deck();
+    deck.applyAdv('scotland', 4);
+    expect(deck.cards).toEqual([1, 1, 2, 2, 3, 'C', 2 , 3, 3, 3, 3]);
+  });
+
   it('should apply HME 4 correctly', () => {
     const deck = new Deck();
     deck.applyAdv('habsburg_mining', 4);
@@ -69,18 +75,18 @@ describe('Deck class', () => {
 
   it('should handle adversaries with no deck modification correctly', () => {
     const deck = new Deck();
-    deck.applyAdv('england', 2);
+    deck.applyAdv('england', 6);
     expect(deck.cards).toEqual([1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3]);
   });
 
-  it('should handle prussia supporting doubles with no deck changes correctly', () => {
+  it('should handle prussia SUPPORTING doubles with no deck changes correctly', () => {
     const deck = new Deck();
     deck.applyAdv('brandenburg_prussia', 6);
     deck.applyAdv('england', 6);
     expect(deck.cards).toEqual([3, 2, 2, 2, 3, 3, 3, 3]);
   });
 
-  it('should handle prussia supporting doubles with deck changes correctly', () => {
+  it('should handle prussia SUPPORTING doubles with deck changes correctly', () => {
     const deck = new Deck();
     deck.applyAdv('brandenburg_prussia', 6);
     deck.applyAdv('russia', 6);
@@ -138,12 +144,26 @@ describe('Deck class', () => {
 
   it('should handle Scotland SUPPORTING doubles with deck changes correctly', () => {
     const deck = new Deck();
-    console.log(deck.cards);
+    console.log('scotland supporting test');
     deck.applyAdv('scotland', 6);
-    console.log(deck.cards);
+    expect(deck.cards).toEqual([1, 1, 2, 2, 3, 'C', 2 , 3, 3, 3, 3]);
     deck.applyAdv('brandenburg_prussia', 6);
-    console.log(deck.cards);
-    expect(deck.cards).toEqual([3,2,3,'C',2,3,3]);
+    expect(deck.cards).toEqual([3,2,3,'C',2,3,3,3]);
+  });
+
+  it('should handle Scotland LEADING doubles with no deck changes correctly', () => {
+    const deck = new Deck();
+    deck.applyAdv('england', 6);
+    deck.applyAdv('scotland', 6);
+    expect(deck.cards).toEqual([1, 1, 2, 2, 3, 'C', 2 , 3, 3, 3, 3]);
+  });
+
+  it('should handle Scotland SUPPORTING doubles with no deck changes correctly', () => {
+    const deck = new Deck();
+    deck.applyAdv('scotland', 6);
+    expect(deck.cards).toEqual([1, 1, 2, 2, 3, 'C', 2 , 3, 3, 3, 3]);
+    deck.applyAdv('england', 6);
+    expect(deck.cards).toEqual([1, 1, 2, 2, 3, 'C', 2 , 3, 3, 3, 3]);
   });
 
   it('should accelerate the deck', () => {

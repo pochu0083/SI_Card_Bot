@@ -315,7 +315,7 @@ module.exports = {
       throw new Error('Please specify at least one adversary and a numeric level (-invaderdeck prussia 6) or (-invaderdeck prussia 6 scotland 6).');
     }
 
-    let leadingAdversary = args[0];
+    let leadingAdversary = args[0].toLowerCase();
     let leadingAdversaryLevel = parseInt(args[1]);
 
     if (!isValidAdversaryLevel(leadingAdversaryLevel)) {
@@ -324,7 +324,7 @@ module.exports = {
 
     let supportingAdversary, supportingAdversaryLevel;
     if (args.length >= 4) {
-      supportingAdversary = args[2];
+      supportingAdversary = args[2].toLowerCase();
       supportingAdversaryLevel = parseInt(args[3]);
 
       if (!isValidAdversaryLevel(supportingAdversaryLevel)) {

@@ -38,6 +38,9 @@ class Deck {
 
 const ADV = {
   prussia: {
+    0: (d) => {
+    return d;
+    },
     1: (d) => {
     return d;
     },
@@ -77,6 +80,9 @@ const ADV = {
     },
   },
   england: {
+    0: (d) => {
+      return d;
+    },
     1: (d) => {
         return d;
     },
@@ -97,51 +103,60 @@ const ADV = {
     }
   },
   sweden: {
-        1: (d) => {
-        return d;
+    0: (d) => {
+      return d;
+    },
+    1: (d) => {
+      return d;
     },
     2: (d) => {
-        return d;
+      return d;
     },
     3: (d) => {
-        return d;
+      return d;
     },
     4 : (d) => {
-        return d;
+      return d;
     },
     5 : (d) => {
-        return d;
+      return d;
     },
     6: (d) => {
-        return d;
+      return d;
     }
   },
   france: {
+    0: (d) => {
+      return d;
+    },
     1: (d) => {
-        return d;
+      return d;
     },
     2: (d) => {
-        return d;
+      return d;
     },
     3: (d) => {
-        return d;
+      return d;
     },
     4 : (d) => {
-        return d;
+      return d;
     },
     5 : (d) => {
-        return d;
+      return d;
     },
     6: (d) => {
-        return d;
+      return d;
     }
   },
   livestock: {
+    0: (d) => {
+      return d;
+    },
     1: (d) => {
-    return d;
+      return d;
     },
     2: (d) => {
-        return d;
+      return d;
     },
     3: (d) => {
       if (d.includes(1)) {
@@ -151,21 +166,24 @@ const ADV = {
       return d;
     },
     4: (d) => {
-        return d;
+      return d;
     },
     5: (d) => {
-        return d;
+      return d;
     },
     6: (d) => {
-        return d;
+      return d;
     },
   },
   russia: {
+    0: (d) => {
+      return d;
+    },
     1: (d) => {
     return d;
     },
     2: (d) => {
-        return d;
+      return d;
     },
     3: (d) => {
     return d;
@@ -202,6 +220,9 @@ const ADV = {
     },
   },
   scotland: {
+    0: (d) => {
+      return d;
+    },
     1: (d) => {
     return d;
     },
@@ -242,6 +263,9 @@ const ADV = {
     },
   },
   mining: {
+    0: (d) => {
+      return d;
+    },
     1: (d) => {
     return d;
     },
@@ -271,6 +295,13 @@ const ADV = {
 };
 
 /**
+ * Returns whether a single adversary is valid
+ */
+const isValidAdversaryLevel = (adversaryLevel) => {
+  return !(isNaN(adversaryLevel) || adversaryLevel < 0 || adversaryLevel > 6);
+};
+
+/**
  * Command that returns the invader deck setup for a given
  * adversary level
  */
@@ -287,8 +318,8 @@ module.exports = {
     let leadingAdversary = args[0];
     let leadingAdversaryLevel = parseInt(args[1]);
 
-    if (isNaN(leadingAdversaryLevel) || leadingAdversaryLevel < 1 || leadingAdversaryLevel > 6) {
-      throw new Error('Please specify a numeric level between 1 and 6.');
+    if (!isValidAdversaryLevel(leadingAdversaryLevel)) {
+      throw new Error('Please specify a numeric level between 0 and 6 for the leading adversary.');
     }
 
     let supportingAdversary, supportingAdversaryLevel;
@@ -296,8 +327,8 @@ module.exports = {
       supportingAdversary = args[2];
       supportingAdversaryLevel = parseInt(args[3]);
 
-      if (isNaN(supportingAdversaryLevel) || supportingAdversaryLevel < 1 || supportingAdversaryLevel > 6) {
-        throw new Error('Please specify a numeric level between 1 and 6 for the supporting adversary.');
+      if (!isValidAdversaryLevel(supportingAdversaryLevel)) {
+        throw new Error('Please specify a numeric level between 0 and 6 for the supporting adversary.');
       }
     }
 
@@ -317,5 +348,7 @@ module.exports = {
     return msg.channel.send(e.toString());
   }
 }
-
 };
+
+// module.exports = { Deck };
+exports.Deck = Deck;

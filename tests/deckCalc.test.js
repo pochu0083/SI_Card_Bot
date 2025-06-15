@@ -9,7 +9,7 @@ describe('Deck class', () => {
 
   it('should apply an advancement rule', () => {
     const deck = new Deck();
-    deck.applyAdv('brandenburg_prussia', 2);
+    deck.applyAdv('prussia', 2);
     expect(deck.cards).not.toEqual([1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3]);
   });
 
@@ -21,37 +21,37 @@ describe('Deck class', () => {
 
   it('should apply Prussia 2 correctly', () => {
     const deck = new Deck();
-    deck.applyAdv('brandenburg_prussia', 2);
+    deck.applyAdv('prussia', 2);
     expect(deck.cards).toEqual([1, 1, 1, 3, 2, 2, 2, 2, 3, 3, 3, 3]);
   });
 
   it('should apply Prussia 3 correctly', () => {
     const deck = new Deck();
-    deck.applyAdv('brandenburg_prussia', 3);
+    deck.applyAdv('prussia', 3);
     expect(deck.cards).toEqual([1, 1, 3, 2, 2, 2, 2, 3, 3, 3, 3]);
   });
 
   it('should apply Prussia 4 correctly', () => {
     const deck = new Deck();
-    deck.applyAdv('brandenburg_prussia', 4);
+    deck.applyAdv('prussia', 4);
     expect(deck.cards).toEqual([1, 1, 3, 2, 2, 2, 3, 3, 3, 3]);
   });
 
   it('should apply Prussia 5 correctly', () => {
     const deck = new Deck();
-    deck.applyAdv('brandenburg_prussia', 5);
+    deck.applyAdv('prussia', 5);
     expect(deck.cards).toEqual([1, 3, 2, 2, 2, 3, 3, 3, 3]);
   });
 
   it('should apply Prussia 6 correctly', () => {
     const deck = new Deck();
-    deck.applyAdv('brandenburg_prussia', 6);
+    deck.applyAdv('prussia', 6);
     expect(deck.cards).toEqual([3, 2, 2, 2, 3, 3, 3, 3]);
   });
 
   it('should apply HLC 3 correctly', () => {
     const deck = new Deck();
-    deck.applyAdv('habsburg_livestock', 3);
+    deck.applyAdv('livestock', 3);
     expect(deck.cards).toEqual([1,1,2,2,2,2,3,3,3,3,3]);
   });
 
@@ -69,7 +69,7 @@ describe('Deck class', () => {
 
   it('should apply HME 4 correctly', () => {
     const deck = new Deck();
-    deck.applyAdv('habsburg_mining', 4);
+    deck.applyAdv('mining', 4);
     expect(deck.cards).toEqual([1, 1, 1, 2, 'S', 2 , 2, 3, 3, 3, 3, 3]);
   });
 
@@ -81,14 +81,14 @@ describe('Deck class', () => {
 
   it('should handle prussia SUPPORTING doubles with no deck changes correctly', () => {
     const deck = new Deck();
-    deck.applyAdv('brandenburg_prussia', 6);
+    deck.applyAdv('prussia', 6);
     deck.applyAdv('england', 6);
     expect(deck.cards).toEqual([3, 2, 2, 2, 3, 3, 3, 3]);
   });
 
   it('should handle prussia SUPPORTING doubles with deck changes correctly', () => {
     const deck = new Deck();
-    deck.applyAdv('brandenburg_prussia', 6);
+    deck.applyAdv('prussia', 6);
     deck.applyAdv('russia', 6);
     expect(deck.cards).toEqual([3, 2, 3, 2, 3, 2, 3, 3]);
   });
@@ -96,34 +96,34 @@ describe('Deck class', () => {
     it('should handle prussia LEADING doubles with no deck changes correctly', () => {
     const deck = new Deck();
     deck.applyAdv('england', 6);
-    deck.applyAdv('brandenburg_prussia', 6);
+    deck.applyAdv('prussia', 6);
     expect(deck.cards).toEqual([3, 2, 2, 2, 3, 3, 3, 3]);
   });
 
   it('should handle prussia LEADING doubles with deck changes correctly', () => {
     const deck = new Deck();
     deck.applyAdv('russia', 6);
-    deck.applyAdv('brandenburg_prussia', 6);
+    deck.applyAdv('prussia', 6);
     expect(deck.cards).toEqual([3, 3, 2, 3, 2, 3, 2, 3]);
   });
 
   it('should handle HME SUPPORTING doubles with deck changes correctly', () => {
     const deck = new Deck();
-    deck.applyAdv('habsburg_mining', 6);
-    deck.applyAdv('brandenburg_prussia', 6);
+    deck.applyAdv('mining', 6);
+    deck.applyAdv('prussia', 6);
     expect(deck.cards).toEqual([3, 'S', 2, 2, 3, 3, 3, 3]);
   });
 
   it('should handle HME LEADING doubles with deck changes correctly', () => {
     const deck = new Deck();
-    deck.applyAdv('brandenburg_prussia', 6);
-    deck.applyAdv('habsburg_mining', 6);
+    deck.applyAdv('prussia', 6);
+    deck.applyAdv('mining', 6);
     expect(deck.cards).toEqual([3, 2, 'S', 2, 3, 3, 3, 3]);
   });
 
   it('should handle Russia LEADING doubles with deck changes correctly', () => {
     const deck = new Deck();
-    deck.applyAdv('brandenburg_prussia', 6);
+    deck.applyAdv('prussia', 6);
     deck.applyAdv('russia', 6);
     expect(deck.cards).toEqual([3, 2, 3,2,3,2,3,3]);
   });
@@ -131,13 +131,13 @@ describe('Deck class', () => {
   it('should handle Russia SUPPORTING doubles with deck changes correctly', () => {
     const deck = new Deck();
     deck.applyAdv('russia', 6);
-    deck.applyAdv('brandenburg_prussia', 6);
+    deck.applyAdv('prussia', 6);
     expect(deck.cards).toEqual([3,3,2,3,2,3,2,3]);
   });
 
   it('should handle Scotland LEADING doubles with deck changes correctly', () => {
     const deck = new Deck();
-    deck.applyAdv('brandenburg_prussia', 6);
+    deck.applyAdv('prussia', 6);
     deck.applyAdv('scotland', 6);
     expect(deck.cards).toEqual([2,2,3,'C',3,3,3,3]);
   });
@@ -147,7 +147,7 @@ describe('Deck class', () => {
     console.log('scotland supporting test');
     deck.applyAdv('scotland', 6);
     expect(deck.cards).toEqual([1, 1, 2, 2, 3, 'C', 2 , 3, 3, 3, 3]);
-    deck.applyAdv('brandenburg_prussia', 6);
+    deck.applyAdv('prussia', 6);
     expect(deck.cards).toEqual([3,2,3,'C',2,3,3,3]);
   });
 

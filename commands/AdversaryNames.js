@@ -1,15 +1,8 @@
-const Discord = require('discord.js');
+/**
+ * Definition of all adversaries
+ */
 
-var adversary = [
-    ['The Kingdom of Brandenburg-Prussia', '<:FlagBrandenburgPrussia:852366012846309406>', 1, 2, 4, 6, 7, 9, 10  ],
-    ['The Kingdom of England', '<:FlagEngland:852366012175482900>', 1, 3, 4, 6, 7, 9, 10, ],
-    ['The Kingdom of France ', '<:FlagRussia:852366012639739945>', 2, 3, 5, 7, 8, 9, 10 ],
-    ['The Habsburg Monarchy', '<:FlagHabsburg:852366013638639636>', 2, 3, 5, 6, 8, 9, 10],
-    ['The Tsardom of Russia', '<:FlagFrance:852366013243981885> ' , 1, 3, 4, 6, 7, 9, 11],
-    ['The Kingdom of Scotland', '<:FlagScotland:852366013621207040>',1, 4, 6, 7, 8, 10],
-    ['The Kingdom of Sweden','<:FlagSweden:852366014434770963>',  1, 2, 3, 5, 6, 7, 8 ]
-    ['Habsburg Mining Expedition', '<:FlagHabsburgMining:1181395803479212103>', 2, 3, 5, 6, 8, 9, 10]
-];
+const Discord = require('discord.js');
 
 var habsburgmining ={
     title: "habsburg_mining",
@@ -85,7 +78,7 @@ var sweden ={
 
 let ad = new Discord.Collection;
 
-ad.set('prussia', france);
+ad.set('prussia', prussia);
 ad.set('england', england);
 ad.set('france', france);
 ad.set('habsburg', habsburg);
@@ -95,4 +88,3 @@ ad.set('sweden', sweden);
 ad.set('habsburgmining', habsburgmining);
 
 exports.ad = ad;
-exports.adversaries = [prussia, england, france, habsburg, habsburgmining, russia, scotland, sweden];

@@ -1,6 +1,5 @@
 
 const ad = require ('./AdversaryNames.js')
-const getcardname = require('./sendCardLink.js').getCardName;
 
 module.exports = {
 	name: 'adversary',
@@ -14,7 +13,7 @@ module.exports = {
         // if an adversary parameter is provided
         if (args.length != 0){
            const searchString = args[0].toLowerCase();
-           for(const adversary of ad.adversaries){
+           for(const [name, adversary] of ad.ad){
                 // if there is a panel with that string in the title, return it
                 // checks for exact title matches to avoid Prussia - Russia problem
                 if(adversary.title.toLowerCase() == searchString) {
@@ -37,7 +36,7 @@ module.exports = {
         // if no match found or no argument provided, assume they want a list of adversaries
         if (args.length == 0 | !found){
             panel = "Choose an adversary: \n";
-            for (const adversary of ad.adversaries){
+            for (const [name, adversary] of ad.ad){
                 panel += "* " + adversary.name + " (" + adversary.title + ", " + adversary.alias.join(" , ") + ")\n";
             }
         }

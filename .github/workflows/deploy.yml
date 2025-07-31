@@ -23,7 +23,7 @@ jobs:
     - name: Pull latest code and restart app
       run: |
         ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
-          cd /path/to/your/app
+          cd ~/SI_Card_Bot
           git pull origin main
           pm2 restart index.js
         EOF

@@ -23,15 +23,17 @@ jobs:
 
     - name: Set up SSH
       run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+        mkdir -p /home/runner/.ssh
+        echo "${{ secrets.EC2_SSH_KEY }}" > /home/runner/.ssh/id_rsa
+        chmod 600 /home/runner/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> /home/runner/.ssh/known_hosts
+
 
     - name: Pull latest code and restart app
       run: |
-        ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
-          cd ~/SI_Card_Bot
+        ssh -i /home/runner/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+          cd /~/SI_Card_Bot
           git pull origin main
           pm2 restart index.js
         EOF
+

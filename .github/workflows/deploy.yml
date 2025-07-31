@@ -13,27 +13,25 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
     - name: Debug SSH Setup
       run: |
         echo "Key length: $(echo "${{ secrets.EC2_SSH_KEY }}" | wc -c)"
         echo "Host: ${{ secrets.EC2_HOST }}"
         echo "User: ec2-user"
         ls -la ~/.ssh
-        cat ~/.ssh/id_rsa | head -n 2
-
-    - name: Set up SSH
-      run: |
-        mkdir -p /home/runner/.ssh
-        echo "${{ secrets.EC2_SSH_KEY }}" > /home/runner/.ssh/id_rsa
-        chmod 600 /home/runner/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> /home/runner/.ssh/known_hosts
-
+        head -n 2 ~/.ssh/id_rsa
 
     - name: Pull latest code and restart app
       run: |
-        ssh -i /home/runner/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
-          cd /~/SI_Card_Bot
+        ssh -v -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+          cd ~/SI_Card_Bot
           git pull origin main
           pm2 restart index.js
         EOF
-

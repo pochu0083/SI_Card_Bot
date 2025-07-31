@@ -24,13 +24,13 @@ jobs:
       run: |
         echo "Key length: $(echo "${{ secrets.EC2_SSH_KEY }}" | wc -c)"
         echo "Host: ${{ secrets.EC2_HOST }}"
-        echo "User: ec2-user"
+        echo "User: ubuntu"
         ls -la ~/.ssh
         head -n 2 ~/.ssh/id_rsa
 
     - name: Pull latest code and restart app
       run: |
-        ssh -v -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+        ssh -v -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
           cd ~/SI_Card_Bot
           git pull origin main
           pm2 restart index.js

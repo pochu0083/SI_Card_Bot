@@ -59,7 +59,7 @@ var Green = {
    var Wildfire = {     
     name: 'Heart of the Wildfire', 
     emote: '<:SpiritHeartWildfire:852365962286989343>', 
-    panel: ['https://imgur.com/A4FRUV5', 'https://imgur.com/Y8lVu5J'],      
+    panel: ['https://i.imgur.com/g6Sqr0k.jpeg', 'https://i.imgur.com/eQJuEVY.jpeg'],      
     complexity: 3,
     title: 'Wildfire',
     uniques: ["flames_fury", "threatening_flames", "flashfires", "asphyxiating_smoke"],

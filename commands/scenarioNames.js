@@ -3,7 +3,7 @@ var blitz = {
     front: "front",
     back: "back",
     difficulty: "0",
-    linkFront: "https://i.imgur.com/l9LsFb7.png" ,
+    link: "https://i.imgur.com/l9LsFb7.png" ,
     linkBack: "https://i.imgur.com/rbm2vox" 
 
 }

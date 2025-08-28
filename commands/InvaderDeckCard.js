@@ -1,5 +1,5 @@
 class InvaderDeckCard {
-  constructor(stage, cardSymbol = null){
+  constructor(stage, cardSymbol = null) {
     this.stage = stage;
     this.cardSymbol = cardSymbol ? cardSymbol : stage;
   }

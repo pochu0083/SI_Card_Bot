@@ -1,4 +1,5 @@
-var help = "See [Github link](<https://github.com/thirdratecyberpunk/SI_Card_Bot>) for invite\
+var help =
+  "See [Github link](<https://github.com/thirdratecyberpunk/SI_Card_Bot>) for invite\
 	\n\nList of commands: \
 	``` -search [search words]\
 	\n -draw [card type] [amount (<=10)]\
@@ -26,18 +27,13 @@ var help = "See [Github link](<https://github.com/thirdratecyberpunk/SI_Card_Bot
 	\n -scenario (front/back) [keywords] \
 	\n -invaderdeck (leadingAdversary leadingAdversaryLevel supportingAdversary supportingAdversaryLevel) \
 	```\
-	"
+	";
 
 module.exports = {
-	name: 'help',
-	description: 'lists of commands',
-	public: true,
-	async execute(msg, args) {
-		await msg.channel.send(help);
-	},
+  name: "help",
+  description: "lists of commands",
+  public: true,
+  async execute(msg, args) {
+    await msg.channel.send(help);
+  },
 };
-
-
-
-
-

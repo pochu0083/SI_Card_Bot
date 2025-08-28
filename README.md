@@ -1,16 +1,18 @@
 # SI_Card_Bot
+
 Discord App for Spirit island
 
 **Invite code**: https://discord.com/oauth2/authorize?client_id=1120665987331661904&permissions=292058114048&integration_type=0&scope=bot
 
-### How to run the bot - 
+### How to run the bot -
 
 - Clone this repo
-- Copy `.env.template` into `.env` and fill in the variables 
+- Copy `.env.template` into `.env` and fill in the variables
 - `npm install` to install all pre-requisites
 - `npm start` to run the bot
 
-### Bot Commands 
+### Bot Commands
+
 - -search [search words]
 - -draw [card type] [amount (<=10)]
 - -dtnw [player count]
@@ -36,8 +38,9 @@ Discord App for Spirit island
 - -incarna [keyword] (front/back)
 - -scenario (front/back) [keywords]
 - -invaderdeck (leadingAdversary leadingAdversaryLevel supportingAdversary supportingAdversaryLevel)
- 
+
 ### TODO
+
 - Implement levenshtein to all card search
 - clean up code a bit.
 - Deleting -random message after 15 secs

@@ -7,73 +7,75 @@
     Version 2.8.2 role bot  
 */
 
-require('dotenv').config(); 
-const fs = require('fs');
-const Discord = require('discord.js');
+require("dotenv").config();
+const fs = require("fs");
+const Discord = require("discord.js");
 
-const { Client, Collection, GatewayIntentBits, Partials, ActivityType} = require('discord.js');
+const {
+  Client,
+  Collection,
+  GatewayIntentBits,
+  Partials,
+  ActivityType,
+} = require("discord.js");
 const bot = new Client({
-	intents: [
-		GatewayIntentBits.Guilds,
-		GatewayIntentBits.GuildMessages,
-		GatewayIntentBits.MessageContent,
-		GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.DirectMessages,
-	],
-    partials: [
-        Partials.Channel,
-        Partials.Message
-    ],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.DirectMessages,
+  ],
+  partials: [Partials.Channel, Partials.Message],
 });
 
 const PREFIX = "-";
 
 bot.commands = new Collection();
 
-const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
+const commandFiles = fs
+  .readdirSync("./commands/")
+  .filter((file) => file.endsWith(".js"));
 
 for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-        //if(command.public){
-        bot.commands.set(command.name, command);
-//}
-};
+  const command = require(`./commands/${file}`);
+  //if(command.public){
+  bot.commands.set(command.name, command);
+  //}
+}
 
-bot.once('ready', async() => {
-    console.log('This bot is online');
- 
-    // Set bot's presence
-    bot.user.setPresence({
-        activities: [{ name: `for -help`, type: ActivityType.Watching }],
-        status: 'for -help',
-      });
+bot.once("ready", async () => {
+  console.log("This bot is online");
 
-    console.log(bot.commands.get("spirit").name);
+  // Set bot's presence
+  bot.user.setPresence({
+    activities: [{ name: `for -help`, type: ActivityType.Watching }],
+    status: "for -help",
+  });
 
+  console.log(bot.commands.get("spirit").name);
 });
 
-bot.on('messageCreate', async msg => {
+bot.on("messageCreate", async (msg) => {
+  if (!msg.content.startsWith(PREFIX)) return;
 
-    if (!msg.content.startsWith(PREFIX)) return;
+  let args = msg.content.slice(PREFIX.length).trim().split(" ");
+  let command = args.shift().toLowerCase();
+  console.log(command);
 
-    let args = msg.content.slice(PREFIX.length).trim().split(' ');
-    let command = args.shift().toLowerCase();
-    console.log(command);
+  // if (!isNaN(parseInt(command))) {
+  //     args = [command]
+  //     command = "choose"
+  // }
+  //
 
-    // if (!isNaN(parseInt(command))) {
-    //     args = [command]
-    //     command = "choose"
-    // }
-    //
+  if (!bot.commands.has(command)) return console.log("command not in list");
 
-    if (!bot.commands.has(command)) return console.log("command not in list");
-
-    try {
-        await bot.commands.get(command).execute(msg, args, Discord);
-    } catch (error) {
-        console.error(error);
-    }
+  try {
+    await bot.commands.get(command).execute(msg, args, Discord);
+  } catch (error) {
+    console.error(error);
+  }
 });
-
 
 bot.login();

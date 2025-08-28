@@ -1,5 +1,5 @@
 const globals = {
-    choices: [] // [{ "label": "...", "value": "..."" }, ...]
-}
+  choices: [], // [{ "label": "...", "value": "..."" }, ...]
+};
 
 module.exports = globals;

@@ -3,8 +3,8 @@ const InvaderDeckCard = require('../commands/InvaderDeckCard.js');
 const Deck = require('../commands/Deck.js');
 const ad = require('../commands/AdversaryNames.js').ad;
 
-describe('Deck class', () => {
-  it('should initialize with a default deck', () => {
+describe("Deck class", () => {
+  it("should initialize with a default deck", () => {
     const deck = new Deck();
     const expectedCards = [
        new InvaderDeckCard(1),
@@ -23,7 +23,7 @@ describe('Deck class', () => {
     expect(deck.cards).toEqual(expectedCards);
   });
 
-  it('should apply an advancement rule', () => {
+  it("should apply an advancement rule", () => {
     const deck = new Deck();
     deck.applyAdv(ad.get('prussia'), 2);
     const expectedCards = [
@@ -43,7 +43,7 @@ describe('Deck class', () => {
     expect(deck.cards).not.toEqual(expectedCards);
   });
 
-  it('should apply Russia 4 correctly', () => {
+  it("should apply Russia 4 correctly", () => {
     const deck = new Deck();
     const expectedCards = [
        new InvaderDeckCard(1),
@@ -83,7 +83,7 @@ describe('Deck class', () => {
   expect(deck.cards).toEqual(expectedCards);
 });
 
-  it('should apply Prussia 3 correctly', () => {
+  it("should apply Prussia 3 correctly", () => {
     const deck = new Deck();
     const expectedCards = [
       new InvaderDeckCard(1),

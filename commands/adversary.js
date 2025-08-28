@@ -42,5 +42,6 @@ module.exports = {
             }
         }
 
-        msg.channel.send(panel);
-    }};
+    msg.channel.send(panel);
+  },
+};

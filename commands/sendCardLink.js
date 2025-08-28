@@ -1,37 +1,28 @@
- const levenshtein = require('js-levenshtein');
+const levenshtein = require("js-levenshtein");
 
-
-function getCardName(input, availableNames, weightOfSizediff = 0.8)
-{
-  var target  = cleanInput(input);
+function getCardName(input, availableNames, weightOfSizediff = 0.8) {
+  var target = cleanInput(input);
   var perfectMatches = getPerfectMatch(target, availableNames);
 
   console.log(target, perfectMatches);
 
-  if(perfectMatches.length === 1)
-  {
+  if (perfectMatches.length === 1) {
     return perfectMatches[0];
-  }
-  else if(perfectMatches.length > 1)
-  {
+  } else if (perfectMatches.length > 1) {
     return getCardNameHelper(target, perfectMatches, weightOfSizediff);
-  }
-  else
-  {
+  } else {
     return getCardNameHelper(target, availableNames, weightOfSizediff);
   }
 }
 
-function getCardNameHelper(input, availableNames, weightOfSizediff)
-{
+function getCardNameHelper(input, availableNames, weightOfSizediff) {
   var result = null;
   var closestDistance = 999;
 
-  for(var name of availableNames)
-  {
+  for (var name of availableNames) {
     var sizeDiff = name.length > input.length ? name.length - input.length : 0;
-    var distance = levenshtein(input, name) - (sizeDiff * weightOfSizediff);
-    if(distance < closestDistance){
+    var distance = levenshtein(input, name) - sizeDiff * weightOfSizediff;
+    if (distance < closestDistance) {
       closestDistance = distance;
       result = name;
     }
@@ -39,40 +30,48 @@ function getCardNameHelper(input, availableNames, weightOfSizediff)
   return result;
 }
 
-function getPerfectMatch(input, availableNames)
-{
+function getPerfectMatch(input, availableNames) {
   var result = [];
-  for(var name of availableNames)
-  {
-    if(name.includes(input))
-    {
+  for (var name of availableNames) {
+    if (name.includes(input)) {
       result.push(name);
     }
   }
   return result;
 }
 
-async function sendCardLink(msg, input, availableNames, basePath, aliases = {})
-{
-  var cardName = getCardName(input, [].concat(availableNames).concat(Object.keys(aliases)));
+async function sendCardLink(
+  msg,
+  input,
+  availableNames,
+  basePath,
+  aliases = {},
+) {
+  var cardName = getCardName(
+    input,
+    [].concat(availableNames).concat(Object.keys(aliases)),
+  );
   console.log(cardName);
-  if(cardName){
+  if (cardName) {
     if (cardName in aliases) {
       cardName = aliases[cardName];
     }
-    return await msg.channel.send(basePath + cardName  + '.webp');
-  }else{
+    return await msg.channel.send(basePath + cardName + ".webp");
+  } else {
     return await msg.channel.send("Incorrect name, try using !search");
   }
 }
 
-function cleanInput(args){
-    var card_name = args.toString().toLowerCase();
-    return card_name.replace("-", "").replace("\'", "").replace(",", "_").replace(' ', '_');
+function cleanInput(args) {
+  var card_name = args.toString().toLowerCase();
+  return card_name
+    .replace("-", "")
+    .replace("\'", "")
+    .replace(",", "_")
+    .replace(" ", "_");
 }
-
 
 module.exports = {
-  getCardName:  getCardName,
-  sendCardLink: sendCardLink
-}
+  getCardName: getCardName,
+  sendCardLink: sendCardLink,
+};

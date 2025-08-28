@@ -1,0 +1,37 @@
+name: Auto Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Debug SSH Setup
+        run: |
+          echo "Key length: $(echo "${{ secrets.EC2_SSH_KEY }}" | wc -c)"
+          echo "Host: ${{ secrets.EC2_HOST }}"
+          echo "User: ubuntu"
+          ls -la ~/.ssh
+          head -n 2 ~/.ssh/id_rsa
+
+      - name: Pull latest code and restart app
+        run: |
+          ssh -v -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+            cd ~/SI_Card_Bot
+            git pull origin main
+            pm2 restart index.js
+          EOF

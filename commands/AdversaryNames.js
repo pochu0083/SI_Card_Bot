@@ -334,7 +334,7 @@ var sweden ={
   },    
 }
 
-let ad = new Discord.Collection;
+let ad = new Discord.Collection();
 
 ad.set('prussia', prussia);
 ad.set('england', england);

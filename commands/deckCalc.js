@@ -133,6 +133,10 @@ module.exports = {
       }
     }
 
+    if(supportingAdversary.name == leadingAdversary.name){
+      throw new Error('Please specify two different adversaries.');
+    }
+
     const deck = new Deck();
     if (supportingAdversary) {
       deck.applyAdv(supportingAdversary, supportingAdversaryLevel);

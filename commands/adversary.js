@@ -9,7 +9,8 @@ module.exports = {
         var panel =  "";
         var found = false;
         var list = [];
-        
+        // TODO: migrate the logic for checking an invader panel by name/alias to separate class
+        // to minimise duplication
         // if an adversary parameter is provided
         if (args.length != 0){
            const searchString = args[0].toLowerCase();

@@ -184,4 +184,7 @@ describe('Deck class', () => {
   });
 
   // TODO: add tests for retrieving adversaries by nicknames
+  // (need to extract logic for adversary nickname retrieval out first)
+
+  // TODO: add tests for handling duplicate adversaries
 });

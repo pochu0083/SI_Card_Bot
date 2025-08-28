@@ -1,29 +1,30 @@
-const InvaderDeckCard = require('./InvaderDeckCard.js');
+const InvaderDeckCard = require("./InvaderDeckCard.js");
 
 class Deck {
   constructor() {
-    this.cards = [new InvaderDeckCard(1),
-       new InvaderDeckCard(1),
-       new InvaderDeckCard(1),
-       new InvaderDeckCard(2),
-       new InvaderDeckCard(2),
-       new InvaderDeckCard(2),
-       new InvaderDeckCard(2),
-       new InvaderDeckCard(3), 
-       new InvaderDeckCard(3), 
-       new InvaderDeckCard(3),
-       new InvaderDeckCard(3),
-       new InvaderDeckCard(3)
+    this.cards = [
+      new InvaderDeckCard(1),
+      new InvaderDeckCard(1),
+      new InvaderDeckCard(1),
+      new InvaderDeckCard(2),
+      new InvaderDeckCard(2),
+      new InvaderDeckCard(2),
+      new InvaderDeckCard(2),
+      new InvaderDeckCard(3),
+      new InvaderDeckCard(3),
+      new InvaderDeckCard(3),
+      new InvaderDeckCard(3),
+      new InvaderDeckCard(3),
     ];
-}
+  }
   /**
    * Returns an invader deck given an adversary and a level
-   * @param {*} adv 
-   * @param {*} lvl 
-   * @param {*} strict 
+   * @param {*} adv
+   * @param {*} lvl
+   * @param {*} strict
    */
   applyAdv(adv, lvl, strict = false) {
-    if ((!adv.deckModification.hasOwnProperty(lvl)) && strict) {
+    if (!adv.deckModification.hasOwnProperty(lvl) && strict) {
       throw new Error(`${adv.title} doesn't have ${lvl} rule`);
     }
 
@@ -35,9 +36,9 @@ class Deck {
   }
 
   /**
-   * "Accelerates" a deck -> i.e returns the deck after Discarding the topmost card of 
+   * "Accelerates" a deck -> i.e returns the deck after Discarding the topmost card of
    * the lowest Invader Stage remaining in the deck.
-   * @returns 
+   * @returns
    */
   accel() {
     const index = this.cards.findIndex((card) => card === 1 || card === 2);
@@ -52,24 +53,33 @@ class Deck {
   /**
    * Returns a dashed representation of the current invader deck
    */
-   formattedDeck() {
-        let arr = this.cards;
-        let result = [];
-        let currentGroup = [arr[0]];
+  formattedDeck() {
+    let arr = this.cards;
+    let result = [];
+    let currentGroup = [arr[0]];
 
-        for (let i = 1; i < arr.length; i++) {
-            if (arr[i].stage === arr[i - 1].stage) {
-                currentGroup.push(arr[i].cardSymbol);
-            } else {
-                result.push(currentGroup.length === 1 ? String(currentGroup[0].cardSymbol) : String(currentGroup[0].cardSymbol) + currentGroup.slice(1).join(''));
-                currentGroup = [arr[i]];
-            }
-        }
-
-        result.push(currentGroup.length === 1 ? String(currentGroup[0].cardSymbol) : String(currentGroup[0].cardSymbol) + currentGroup.slice(1).join(''));
-
-        return result.join('-');
+    for (let i = 1; i < arr.length; i++) {
+      if (arr[i].stage === arr[i - 1].stage) {
+        currentGroup.push(arr[i].cardSymbol);
+      } else {
+        result.push(
+          currentGroup.length === 1
+            ? String(currentGroup[0].cardSymbol)
+            : String(currentGroup[0].cardSymbol) +
+                currentGroup.slice(1).join(""),
+        );
+        currentGroup = [arr[i]];
+      }
     }
+
+    result.push(
+      currentGroup.length === 1
+        ? String(currentGroup[0].cardSymbol)
+        : String(currentGroup[0].cardSymbol) + currentGroup.slice(1).join(""),
+    );
+
+    return result.join("-");
+  }
 }
 
 module.exports = Deck;

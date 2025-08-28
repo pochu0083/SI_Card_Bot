@@ -190,7 +190,10 @@ var habsburg ={
     4: (d) => {
       return d;
     },
+    // adds the reminder card to the deck as a 0 as it should never be removed by any
+    // other adversary
     5: (d) => {
+      d.splice(5, 0, new InvaderDeckCard(0, "Wave of Immigration Reminder"));
       return d;
     },
     6: (d) => {

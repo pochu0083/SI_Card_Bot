@@ -172,6 +172,26 @@ it('should apply HLC 3 correctly', () => {
   expect(deck.cards).toEqual(expectedCards);
 });
 
+it('should apply HLC 5 correctly', () => {
+  const deck = new Deck();
+  const expectedCards = [
+    new InvaderDeckCard(1),
+    new InvaderDeckCard(1),
+    new InvaderDeckCard(2),
+    new InvaderDeckCard(2),
+    new InvaderDeckCard(2),
+    new InvaderDeckCard(0, "Wave of Immigration Reminder"),
+    new InvaderDeckCard(2),
+    new InvaderDeckCard(3),
+    new InvaderDeckCard(3),
+    new InvaderDeckCard(3),
+    new InvaderDeckCard(3),
+    new InvaderDeckCard(3)
+  ];
+  deck.applyAdv(ad.get('habsburg'), 5);
+  expect(deck.cards).toEqual(expectedCards);
+});
+
 it('should apply Scotland 2 correctly', () => {
   const deck = new Deck();
   const expectedCards = [

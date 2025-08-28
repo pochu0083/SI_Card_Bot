@@ -3,6 +3,7 @@
  */
 
 const Discord = require('discord.js');
+const { InvaderDeckCard } = require('./deckCalc.js');
 
 var habsburgmining ={
     title: "habsburg_mining",
@@ -26,12 +27,12 @@ var habsburgmining ={
     },
     4: (d) => {
       const indices = d.reduce((acc, card, index) => {
-        if (card === 2) {
+        if (card.stage === 2 && card.stage == card.cardSymbol) {
           acc.push(index);
         }
         return acc;
       }, []);
-      d[indices[1]] = "S";
+      d[indices[1]] = new InvaderDeckCard(2, "S");
       return d;
     },
     5: (d) => {
@@ -59,36 +60,40 @@ var prussia ={
     },
     // put one of the stage 3 cards between stage 1 and 2
     2: (d) => {
-      const index = d.lastIndexOf(1) + 1;
+      const index = d.findIndex(card => card.stage === 2);
       d.splice(index, 0, d.pop());
-      if (d[d.length - 1] !== 3) {
+      if (d[d.length - 1].stage !== 3) {
         throw new Error("Bad 3 wasn't found");
       }
       return d;
     },
+    // remove an additional stage I card
     3: (d) => {
-      const index = d.indexOf(1);
+      const index = d.findIndex(card => card.stage === 1);
       if (index != -1){
           d.splice(index, 1);
       }
       return d;
     },
+    // remove an additional stage II card
     4: (d) => {
-      const index = d.indexOf(2);
+      const index = d.findIndex(card => card.stage === 2);
       if (index != -1){
           d.splice(index, 1);
       }
       return d;
     },
+    // remove an additional stage I card
     5: (d) => {
-      const index = d.indexOf(1);
+      const index = d.findIndex(card => card.stage === 1);
       if (index != -1){
           d.splice(index, 1);
       }
       return d;
     },
+    // remove all stage I cards
     6: (d) => {
-        let newarr = d.filter(a => a !== 1);
+        let newarr = d.filter(a => a.stage !== 1);
         return newarr;
     },
   }    
@@ -176,8 +181,8 @@ var habsburg ={
       return d;
     },
     3: (d) => {
-      if (d.includes(1)) {
-        const index = d.indexOf(1);
+      const index = d.findIndex(card => card.stage === 1);
+      if (index != -1) {
         d.splice(index, 1);
       }
       return d;
@@ -219,27 +224,21 @@ var russia ={
     },
     4: (d) => {
       const indices = d.reduce((acc, card, index) => {
-        if (card === 2) {
+        if (card.stage === 2 && card.stage == card.cardSymbol) {
           acc.push(index);
         }
         return acc;
       }, []);
       indices.reverse().forEach((index) => {
         d.splice(index + 1, 0, d.pop());
-        if (d[d.length - 1] !== 3) {
+        if (d[d.length - 1].stage !== 3) {
           throw new Error("Bad 3 wasn't found");
         }
       });
       return d;
     },
-        1: (d) => {
-    return d;
-    },
     5: (d) => {
         return d;
-    },
-        1: (d) => {
-    return d;
     },
     6: (d) => {
         return d;
@@ -263,13 +262,14 @@ var scotland ={
     },
     2: (d) => {
       const indices = d.reduce((acc, card, index) => {
-        if (card === 2) {
+        if (card.stage === 2 && card.cardSymbol == card.stage) {
           acc.push(index);
         }
         return acc;
       }, []);
-      // replace the 3rd stage II card with Coastal card
-      d[indices[2]] = "C";
+      // replace the 3rd stage II card that ISN'T an adversary specific
+      // card with Coastal card
+      d[indices[2]] = new InvaderDeckCard(2,"C");
       // then, move the two Stage II cards above it up by one
       d.splice(indices[0] - 1, 0, d.splice(indices[0], 1)[0]);
       d.splice(indices[1] - 1, 0, d.splice(indices[1], 1)[0]);
@@ -280,9 +280,9 @@ var scotland ={
     },
     4: (d) => {
       // replaces the last stage 1 card with the bottom stage 3 card  
-      const index = d.lastIndexOf(1);
+      const index = d.findLastIndex(card => card.stage === 1);
       if (index !== -1) {
-        const stage3index = d.lastIndexOf(3);
+        const stage3index = d.findLastIndex(card => card.stage === 3);
         if (stage3index > -1){
             // replaces the last stage 1 card with the last stage 3 card
             d[index] = d.splice(stage3index,1).shift();

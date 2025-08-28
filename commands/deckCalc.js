@@ -1,64 +1,6 @@
 const ad = require('./AdversaryNames.js');
-
-class Deck {
-  constructor() {
-    this.cards = [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3];
-  }
-
-  /**
-   * Returns an invader deck given an adversary and a level
-   * @param {*} adv 
-   * @param {*} lvl 
-   * @param {*} strict 
-   */
-  applyAdv(adv, lvl, strict = false) {
-    if ((!adv.deckModification.hasOwnProperty(lvl)) && strict) {
-      throw new Error(`${adv.title} doesn't have ${lvl} rule`);
-    }
-
-    for (let i = 0; i <= lvl; i++) {
-      if (adv.deckModification.hasOwnProperty(lvl)) {
-        this.cards = adv.deckModification[i](this.cards);
-      }
-    }
-  }
-
-  /**
-   * "Accelerates" a deck -> i.e returns the deck with the top card removed
-   * @returns 
-   */
-  accel() {
-    const index = this.cards.findIndex((card) => card === 1 || card === 2);
-    if (index === -1) {
-      throw new Error("No 1 or 2 found in deck");
-    }
-
-    const card = this.cards.splice(index, 1)[0];
-    return [index, card, this.cards];
-  }
-
-  /**
-   * Returns a dashed representation of the current invader deck
-   */
-   formattedDeck() {
-        let arr = this.cards;
-        let result = [];
-        let currentGroup = [arr[0]];
-
-        for (let i = 1; i < arr.length; i++) {
-            if (arr[i] === arr[i - 1]) {
-                currentGroup.push(arr[i]);
-            } else {
-                result.push(currentGroup.length === 1 ? String(currentGroup[0]) : String(currentGroup[0]) + currentGroup.slice(1).join(''));
-                currentGroup = [arr[i]];
-            }
-        }
-
-        result.push(currentGroup.length === 1 ? String(currentGroup[0]) : String(currentGroup[0]) + currentGroup.slice(1).join(''));
-
-        return result.join('-');
-    }
-}
+const InvaderDeckCard = require('./InvaderDeckCard.js');
+const Deck = require('./Deck.js');
 
 /**
  * Returns whether a single adversary is valid
@@ -176,4 +118,5 @@ module.exports = {
   }
 },
 Deck: Deck,
+InvaderDeckCard: InvaderDeckCard,
 };

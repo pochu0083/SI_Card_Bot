@@ -133,8 +133,8 @@ var SoC = {
   linkBack: "https://imgur.com/tnusppS",
 };
 
-var GSoC = {
-  name: "Greater Surges",
+var LSoC = {
+  name: "Larger Surges",
   front: "front",
   back: "back",
   difficulty: "7",
@@ -158,5 +158,5 @@ exports.scenario = [
   VT,
   DU,
   SoC,
-  GSoC,
+  LSoC,
 ];

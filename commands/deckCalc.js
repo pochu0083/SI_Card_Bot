@@ -36,6 +36,28 @@ class Deck {
     const card = this.cards.splice(index, 1)[0];
     return [index, card, this.cards];
   }
+
+  /**
+   * Returns a dashed representation of the current invader deck
+   */
+   formattedDeck() {
+        let arr = this.cards;
+        let result = [];
+        let currentGroup = [arr[0]];
+
+        for (let i = 1; i < arr.length; i++) {
+            if (arr[i] === arr[i - 1]) {
+                currentGroup.push(arr[i]);
+            } else {
+                result.push(currentGroup.length === 1 ? String(currentGroup[0]) : String(currentGroup[0]) + currentGroup.slice(1).join(''));
+                currentGroup = [arr[i]];
+            }
+        }
+
+        result.push(currentGroup.length === 1 ? String(currentGroup[0]) : String(currentGroup[0]) + currentGroup.slice(1).join(''));
+
+        return result.join('-');
+    }
 }
 
 /**
@@ -133,7 +155,7 @@ module.exports = {
       }
     }
 
-    if(supportingAdversary.name == leadingAdversary.name){
+    if(supportingAdversary && supportingAdversary.name == leadingAdversary.name){
       throw new Error('Please specify two different adversaries.');
     }
 
@@ -147,7 +169,7 @@ module.exports = {
       throw new Error('The resulting deck is empty.');
     }
 
-    return msg.channel.send(deck.cards.join(', '));
+    return msg.channel.send(deck.formattedDeck());
   } catch (e) {
     console.log(e);
     return msg.channel.send(e.toString());

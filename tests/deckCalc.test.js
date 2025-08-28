@@ -187,4 +187,35 @@ describe('Deck class', () => {
   // (need to extract logic for adversary nickname retrieval out first)
 
   // TODO: add tests for handling duplicate adversaries
+
+  // tests for deck formatting
+  it('should handle deck formatting for basic deck', () => {
+    const deck = new Deck();
+    expect(deck.cards).toEqual([1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3]);
+    expect(deck.formattedDeck()).toEqual("111-2222-33333");
+  });
+  it('should handle deck formatting for Prussia', () => {
+    const deck = new Deck();
+    deck.applyAdv(ad.get('prussia'), 6);
+    expect(deck.cards).toEqual([3,2,2,2,3,3,3,3]);
+    expect(deck.formattedDeck()).toEqual("3-222-3333");
+  });
+    it('should handle deck formatting for Russia', () => {
+    const deck = new Deck();
+    deck.applyAdv(ad.get('russia'), 4);
+    expect(deck.cards).toEqual([1,1,1,2,3,2,3,2,3,2,3,3]);
+    expect(deck.formattedDeck()).toEqual("111-2-3-2-3-2-3-2-33");
+  });
+  it('should handle deck formatting for Scotland', () => {
+    const deck = new Deck();
+    deck.applyAdv(ad.get('scotland'), 4);
+    expect(deck.cards).toEqual([1, 1, 2, 2, 3, 'C', 2 , 3, 3, 3, 3]);
+    expect(deck.formattedDeck()).toEqual("11-22-3-C2-3333");
+  });
+    it('should handle deck formatting for HME', () => {
+    const deck = new Deck();
+    deck.applyAdv(ad.get('habsburgmining'), 4);
+    expect(deck.cards).toEqual([1, 1, 1, 2, 'S', 2 , 2, 3, 3, 3, 3, 3]);
+    expect(deck.formattedDeck()).toEqual("111-2S22-33333");
+  });
 });

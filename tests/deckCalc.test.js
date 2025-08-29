@@ -189,6 +189,11 @@ describe("Deck class", () => {
       new InvaderDeckCard(3),
     ];
     deck.applyAdv(ad.get("habsburg"), 5);
+    const hlcReminderCard = new InvaderDeckCard(
+      0,
+      "Wave of Immigration Reminder",
+    );
+    deck.cards.splice(5, 0, hlcReminderCard);
     expect(deck.cards).toEqual(expectedCards);
   });
 

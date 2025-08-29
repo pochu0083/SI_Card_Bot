@@ -67,15 +67,6 @@ var prussia = {
     },
     // “Move the bottom-most Stage III card just
     // below the bottom-most Stage I card.”
-    // 2: (d) => {
-    //   // const index = d.findLastIndex((card) => card.stage === 1);
-    //   const index = d.findIndex((card) => card.stage === 2);
-    //   d.splice(index, 0, d.pop());
-    //   if (d[d.length - 1].stage !== 3) {
-    //     throw new Error("Bad 3 wasn't found");
-    //   }
-    //   return d;
-    // },
     2: (d) => {
       // find the index of the bottom most stage 3 card
       const bottomStage3Index = d.findLastIndex((card) => card.stage === 3);
@@ -254,12 +245,11 @@ var russia = {
     3: (d) => {
       return d;
     },
-    2: (d) => {
-      return d;
-    },
+    // Accelerated Exploitation: When making the Invader Deck, put 1 Stage III
+    // card after each Stage II card
     4: (d) => {
       const indices = d.reduce((acc, card, index) => {
-        if (card.stage === 2 && card.stage == card.cardSymbol) {
+        if (card.stage === 2) {
           acc.push(index);
         }
         return acc;

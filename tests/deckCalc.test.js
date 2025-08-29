@@ -569,6 +569,47 @@ describe("Deck class", () => {
     expect(deck.cards).toEqual(expectedCards);
   });
 
+  it("should handle Scotland 2 SUPPORTING Russia 4 correctly", () => {
+    const deck = new Deck();
+    deck.applyAdv(ad.get("scotland"), 2);
+    deck.applyAdv(ad.get("russia"), 4);
+    const expectedCards = [
+      new InvaderDeckCard(1),
+      new InvaderDeckCard(1),
+      new InvaderDeckCard(2),
+      new InvaderDeckCard(3),
+      new InvaderDeckCard(2),
+      new InvaderDeckCard(3),
+      new InvaderDeckCard(1),
+      new InvaderDeckCard(2, "C"),
+      new InvaderDeckCard(3),
+      new InvaderDeckCard(2),
+      new InvaderDeckCard(3),
+      new InvaderDeckCard(3),
+    ];
+    expect(deck.cards).toEqual(expectedCards);
+  });
+
+  it("should handle Scotland 4 SUPPORTING Russia 4 correctly", () => {
+    const deck = new Deck();
+    deck.applyAdv(ad.get("scotland"), 4);
+    deck.applyAdv(ad.get("russia"), 4);
+    const expectedCards = [
+      new InvaderDeckCard(1),
+      new InvaderDeckCard(1),
+      new InvaderDeckCard(2),
+      new InvaderDeckCard(3),
+      new InvaderDeckCard(2),
+      new InvaderDeckCard(3),
+      new InvaderDeckCard(3),
+      new InvaderDeckCard(2, "C"),
+      new InvaderDeckCard(3),
+      new InvaderDeckCard(2),
+      new InvaderDeckCard(3),
+    ];
+    expect(deck.cards).toEqual(expectedCards);
+  });
+
   it("should handle Scotland LEADING doubles with no deck changes correctly", () => {
     const deck = new Deck();
     deck.applyAdv(ad.get("england"), 6);

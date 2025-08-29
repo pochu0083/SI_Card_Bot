@@ -32,6 +32,10 @@ var habsburgmining = {
     3: (d) => {
       return d;
     },
+    // Untapped Salt Deposits: 'Remove the Stage II 'Coastal Lands' card
+    // before randomly choosing Stage II cards. Place the 'Salt Deposits' card in
+    // place of the 2nd Stage II card.
+    // THIS DOES NOT REMOVE THE COASTAL LANDS CARD FOR SCOTLAND DOUBLES
     4: (d) => {
       const indices = d.reduce((acc, card, index) => {
         if (card.stage === 2 && card.stage == card.cardSymbol) {

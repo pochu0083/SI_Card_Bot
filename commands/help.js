@@ -26,6 +26,7 @@ var help =
 	\n -incarna [keyword] (front/back) \
 	\n -scenario (front/back) [keywords] \
 	\n -invaderdeck (leadingAdversary leadingAdversaryLevel supportingAdversary supportingAdversaryLevel) \
+	\n -progression (spirit) \
 	```\
 	";
 

@@ -38,9 +38,4 @@ Discord App for Spirit island
 - -incarna [keyword] (front/back)
 - -scenario (front/back) [keywords]
 - -invaderdeck (leadingAdversary leadingAdversaryLevel supportingAdversary supportingAdversaryLevel)
-
-### TODO
-
-- Implement levenshtein to all card search
-- clean up code a bit.
-- Deleting -random message after 15 secs
+- -progression (spirit)

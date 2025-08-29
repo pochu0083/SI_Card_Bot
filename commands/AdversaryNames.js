@@ -65,13 +65,29 @@ var prussia = {
     1: (d) => {
       return d;
     },
-    // put one of the stage 3 cards between stage 1 and 2
+    // “Move the bottom-most Stage III card just
+    // below the bottom-most Stage I card.”
+    // 2: (d) => {
+    //   // const index = d.findLastIndex((card) => card.stage === 1);
+    //   const index = d.findIndex((card) => card.stage === 2);
+    //   d.splice(index, 0, d.pop());
+    //   if (d[d.length - 1].stage !== 3) {
+    //     throw new Error("Bad 3 wasn't found");
+    //   }
+    //   return d;
+    // },
     2: (d) => {
-      const index = d.findIndex((card) => card.stage === 2);
-      d.splice(index, 0, d.pop());
-      if (d[d.length - 1].stage !== 3) {
-        throw new Error("Bad 3 wasn't found");
+      // find the index of the bottom most stage 3 card
+      const bottomStage3Index = d.findLastIndex((card) => card.stage === 3);
+      // find the index of the bottom most stage 1 card
+      const bottomStage1Index = d.findLastIndex((card) => card.stage === 1);
+      // pop the bottom most stage 3 card off and move it to
+      // the index of the bottom most stage 1 card + 1
+      if (bottomStage3Index == -1) {
+        throw new Error("Stage 3 card not found, cannot apply Prussia 2");
       }
+      const stage3Card = d.splice(bottomStage3Index, 1)[0];
+      d.splice(bottomStage1Index + 1, 0, stage3Card);
       return d;
     },
     // remove an additional stage I card

@@ -32,6 +32,10 @@ var habsburgmining = {
     3: (d) => {
       return d;
     },
+    // Untapped Salt Deposits: 'Remove the Stage II 'Coastal Lands' card
+    // before randomly choosing Stage II cards. Place the 'Salt Deposits' card in
+    // place of the 2nd Stage II card.
+    // THIS DOES NOT REMOVE THE COASTAL LANDS CARD FOR SCOTLAND DOUBLES
     4: (d) => {
       const indices = d.reduce((acc, card, index) => {
         if (card.stage === 2 && card.stage == card.cardSymbol) {
@@ -65,13 +69,20 @@ var prussia = {
     1: (d) => {
       return d;
     },
-    // put one of the stage 3 cards between stage 1 and 2
+    // “Move the bottom-most Stage III card just
+    // below the bottom-most Stage I card.”
     2: (d) => {
-      const index = d.findIndex((card) => card.stage === 2);
-      d.splice(index, 0, d.pop());
-      if (d[d.length - 1].stage !== 3) {
-        throw new Error("Bad 3 wasn't found");
+      // find the index of the bottom most stage 3 card
+      const bottomStage3Index = d.findLastIndex((card) => card.stage === 3);
+      // find the index of the bottom most stage 1 card
+      const bottomStage1Index = d.findLastIndex((card) => card.stage === 1);
+      // pop the bottom most stage 3 card off and move it to
+      // the index of the bottom most stage 1 card + 1
+      if (bottomStage3Index == -1) {
+        throw new Error("Stage 3 card not found, cannot apply Prussia 2");
       }
+      const stage3Card = d.splice(bottomStage3Index, 1)[0];
+      d.splice(bottomStage1Index + 1, 0, stage3Card);
       return d;
     },
     // remove an additional stage I card
@@ -209,7 +220,7 @@ var habsburg = {
     // adds the reminder card to the deck as a 0 as it should never be removed by any
     // other adversary
     5: (d) => {
-      d.splice(5, 0, new InvaderDeckCard(0, "Wave of Immigration Reminder"));
+      // d.splice(5, 0, new InvaderDeckCard(0, "Wave of Immigration Reminder"));
       return d;
     },
     6: (d) => {
@@ -238,12 +249,11 @@ var russia = {
     3: (d) => {
       return d;
     },
-    2: (d) => {
-      return d;
-    },
+    // Accelerated Exploitation: When making the Invader Deck, put 1 Stage III
+    // card after each Stage II card
     4: (d) => {
       const indices = d.reduce((acc, card, index) => {
-        if (card.stage === 2 && card.stage == card.cardSymbol) {
+        if (card.stage === 2) {
           acc.push(index);
         }
         return acc;

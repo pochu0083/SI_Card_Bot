@@ -12,6 +12,8 @@
    }
  */
 
+const powerProgression = require("./powerProgression");
+
 var Green = {
   name: "A Spread of Rampant Green",
   emote: "<:SpiritSpreadRampantGreen:852365959149912095>",
@@ -117,6 +119,7 @@ var Lightning = {
   name: "Lightning's Swift Strike",
   emote: "<:SpiritLightningSwiftStrike:852365958839664691> ",
   panel: ["https://imgur.com/yXE6oHw", "https://imgur.com/WLcU0w9"],
+  powerProgression: "https://i.imgur.com/KM42Avh.png",
   complexity: 1,
   title: "Lightning",
   uniques: [
@@ -327,6 +330,7 @@ var Shadows = {
   emote: "<:SpiritShadowsFlickerFlame:852365960286568479>",
   panel: ["https://imgur.com/FmVImnv", "https://imgur.com/oyk2ZwH"],
   complexity: 1,
+  powerProgression: "https://i.imgur.com/jCFu1bS.png",
   title: "Shadows",
   uniques: [
     "concealing_shadows",
@@ -343,6 +347,7 @@ var River = {
   emote: "<:SpiritRiverSurgesSunlight:852365960916762635>",
   panel: ["https://imgur.com/pmdjfxu", "https://imgur.com/uv0mMRV"],
   complexity: 1,
+  powerProgression: "https://i.imgur.com/AyiPvBZ.png",
   title: "River",
   uniques: ["boon_of_vigor", "rivers_bounty", "wash_away", "flash_floods"],
   aliases: [],
@@ -371,6 +376,7 @@ var Earth = {
   emote: "<:SpiritVitalStrengthEarth:852365958593118269>",
   panel: ["https://imgur.com/wgs13CF", "https://imgur.com/5iTl68l"],
   complexity: 1,
+  powerProgression: "https://i.imgur.com/UgskKqW.png",
   title: "Earth",
   uniques: [
     "draw_of_the_fruitful_earth",
@@ -404,6 +410,7 @@ var Fathomless = {
   emote: "<:SpiritOtterFathomlessMud:1037130366345039872>",
   panel: ["https://imgur.com/n0PVQ2V", "https://imgur.com/UQkHym4"],
   complexity: 1,
+  powerProgression: "https://i.imgur.com/1NCasyt.png",
   title: "Fathomless",
   uniques: [
     "exaltation_of_tangled_growth",
@@ -420,6 +427,7 @@ var Devouring = {
   emote: "<:SpiritChompDevouringTeeth:1037129924877762601>",
   panel: ["https://imgur.com/wHjhdPI", "https://imgur.com/eTvswqd"],
   complexity: 1,
+  powerProgression: "https://i.imgur.com/SjT63fz.png",
   title: "Devouring",
   uniques: [
     "ferocious_rampage",
@@ -436,6 +444,7 @@ var Eyes = {
   emote: "<:SpiritEyesWatchTrees:1182821769711734834>",
   panel: ["https://imgur.com/zLFBZYe", "https://imgur.com/BCI4u81"],
   complexity: 1,
+  powerProgression: "https://i.imgur.com/PQsUHkb.png",
   title: "Eyes",
   uniques: [
     "boon_of_watchful_guarding",
@@ -452,6 +461,7 @@ var Rising = {
   emote: "<:SpiritRisingHeatStoneSand:1037455831018516492>",
   panel: ["https://imgur.com/z1JoESZ", "https://imgur.com/O5MYo40"],
   complexity: 1,
+  powerProgression: "https://i.imgur.com/BV2Ydw9.png",
   title: "Rising",
   uniques: [
     "call_on_herders_for_aid",
@@ -468,6 +478,7 @@ var SunBright = {
   emote: "<:SpiritKittySunBrightWhirlwind:1037130011997655050>",
   panel: ["https://imgur.com/bTNvNzt", "https://imgur.com/MP7zaBA"],
   complexity: 1,
+  powerProgression: "https://i.imgur.com/DdeEGtf.png",
   title: "SunBright",
   uniques: [
     "gift_of_the_sunlit_air",

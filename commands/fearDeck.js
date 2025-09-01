@@ -139,7 +139,7 @@ module.exports = {
       }
 
       // applying formatting
-      const fearDeckMessage = `${leadingAdversary.emote} ${leadingAdversaryLevel} ${supportingAdversary?.emote || ""} ${supportingAdversaryLevel || ""} fear deck is (${fearDeck.join("/")})`;
+      const fearDeckMessage = `${leadingAdversary.emote} ${leadingAdversaryLevel}${supportingAdversary?.emote || ""}${supportingAdversaryLevel || ""} fear deck is (${fearDeck.join("/")})`;
 
       return msg.channel.send(fearDeckMessage);
     } catch (e) {

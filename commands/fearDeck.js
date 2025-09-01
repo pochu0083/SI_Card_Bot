@@ -1,6 +1,4 @@
 const ad = require("./AdversaryNames.js");
-const InvaderDeckCard = require("./InvaderDeckCard.js");
-const Deck = require("./Deck.js");
 
 /**
  * Returns whether a single adversary is valid
@@ -10,24 +8,25 @@ const isValidAdversaryLevel = (adversaryLevel) => {
 };
 
 /**
- * Command that returns the invader deck setup for a given
+ * Command that returns the fear deck setup for a given
  * adversary level
  */
 module.exports = {
-  name: "invaderdeck",
+  name: "feardeck",
   description:
-    "Calculates the invader deck for a given adversary/double adversary set up.",
+    "Calculates the fear deck for a given adversary/double adversary set up.",
   public: true,
   async execute(msg, args) {
     try {
       if (args.length < 2) {
         throw new Error(
-          "Please specify at least one adversary and a numeric level (-invaderdeck prussia 6) or (-invaderdeck prussia 6 scotland 6).",
+          "Please specify at least one adversary and a numeric level (-feardeck prussia 6) or (-feardeck prussia 6 scotland 6).",
         );
       }
 
       // TODO: will probably need to migrate the double invader string check
       // to a separate class when I get around to making a -double command
+      // TODO: not be lazy, move this logic out into a separate class since it's duplicated here as well
       let leadingAdversarySearchString = args[0].toLowerCase();
       let leadingAdversaryLevel = parseInt(args[1]);
 
@@ -121,38 +120,31 @@ module.exports = {
         throw new Error("Please specify two different adversaries.");
       }
 
-      const deck = new Deck();
+      let fearDeck = [3, 3, 3];
+
       if (supportingAdversary) {
-        deck.applyAdv(supportingAdversary, supportingAdversaryLevel);
-      }
-      deck.applyAdv(leadingAdversary, leadingAdversaryLevel);
-
-      // hardcoded check for applying HLC reminder card after constructing
-      // deck - not the most elegant way but it's just HLC that's awkward
-      // for now so
-      const hasSupportingHLC =
-        supportingAdversary &&
-        supportingAdversary.title === "habsburg_livestock" &&
-        supportingAdversary.adversaryLevel >= 5;
-      const hasLeadingHLC =
-        leadingAdversary &&
-        leadingAdversary.title === "habsburg_livestock" &&
-        leadingAdversary.adversaryLevel >= 5;
-
-      if (hasSupportingHLC || hasLeadingHLC) {
-        const hlcReminderCard = new InvaderDeckCard(
-          0,
-          "Wave of Immigration Reminder",
+        fearDeck = fearDeck.map(
+          (a, i) =>
+            a +
+            supportingAdversary.fearDeckModification[supportingAdversaryLevel][
+              i
+            ] +
+            leadingAdversary.fearDeckModification[leadingAdversaryLevel][i],
         );
-        deck.cards.splice(5, 0, hlcReminderCard);
+      } else {
+        fearDeck = fearDeck.map(
+          (a, i) =>
+            a + leadingAdversary.fearDeckModification[leadingAdversaryLevel][i],
+        );
       }
 
-      return msg.channel.send(deck.formattedDeck());
+      // applying formatting
+      const fearDeckMessage = `${leadingAdversary.emote} ${leadingAdversaryLevel}${supportingAdversary?.emote || ""}${supportingAdversaryLevel || ""} fear deck is (${fearDeck.join("/")})`;
+
+      return msg.channel.send(fearDeckMessage);
     } catch (e) {
       console.log(e);
       return msg.channel.send(e.toString());
     }
   },
-  Deck: Deck,
-  InvaderDeckCard: InvaderDeckCard,
 };

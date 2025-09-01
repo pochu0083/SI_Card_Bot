@@ -38,11 +38,13 @@ var habsburgmining = {
     // THIS DOES NOT REMOVE THE COASTAL LANDS CARD FOR SCOTLAND DOUBLES
     4: (d) => {
       const indices = d.reduce((acc, card, index) => {
+        // gets the indexes of all the non-adversary specific Stage II cards
         if (card.stage === 2 && card.stage == card.cardSymbol) {
           acc.push(index);
         }
         return acc;
       }, []);
+      // replaces the 2nd non adversary specific Stage II card with a Salt Deposits card
       d[indices[1]] = new InvaderDeckCard(2, "S");
       return d;
     },
@@ -52,6 +54,15 @@ var habsburgmining = {
     6: (d) => {
       return d;
     },
+  },
+  fearDeckModification: {
+    0: [0, 0, 0],
+    1: [0, 0, 0],
+    2: [0, 0, 1],
+    3: [0, 1, 1],
+    4: [1, 1, 1],
+    5: [1, 2, 1],
+    6: [1, 2, 1],
   },
 };
 
@@ -115,6 +126,15 @@ var prussia = {
       return newarr;
     },
   },
+  fearDeckModification: {
+    0: [0, 0, 0],
+    1: [0, 0, 0],
+    2: [0, 0, 0],
+    3: [0, 1, 0],
+    4: [1, 1, 0],
+    5: [1, 1, 0],
+    6: [1, 1, 1],
+  },
 };
 
 var england = {
@@ -147,6 +167,15 @@ var england = {
       return d;
     },
   },
+  fearDeckModification: {
+    0: [0, 0, 0],
+    1: [0, 1, 0],
+    2: [1, 1, 0],
+    3: [1, 2, 1],
+    4: [1, 2, 2],
+    5: [1, 2, 2],
+    6: [1, 2, 1],
+  },
 };
 
 var france = {
@@ -178,6 +207,15 @@ var france = {
     6: (d) => {
       return d;
     },
+  },
+  fearDeckModification: {
+    0: [0, 0, 0],
+    1: [0, 0, 0],
+    2: [0, 1, 0],
+    3: [1, 1, 0],
+    4: [1, 1, 1],
+    5: [1, 2, 1],
+    6: [1, 2, 2],
   },
 };
 
@@ -227,6 +265,15 @@ var habsburg = {
       return d;
     },
   },
+  fearDeckModification: {
+    0: [0, 0, 0],
+    1: [0, 1, 0],
+    2: [1, 2, -1],
+    3: [1, 2, 0],
+    4: [1, 2, 0],
+    5: [1, 3, 0],
+    6: [2, 3, 0],
+  },
 };
 
 var russia = {
@@ -273,6 +320,15 @@ var russia = {
       return d;
     },
   },
+  fearDeckModification: {
+    0: [0, 0, 0],
+    1: [0, 0, 1],
+    2: [1, 0, 1],
+    3: [1, 1, 0],
+    4: [1, 1, 1],
+    5: [1, 2, 1],
+    6: [2, 2, 1],
+  },
 };
 
 var scotland = {
@@ -290,12 +346,15 @@ var scotland = {
       return d;
     },
     2: (d) => {
+      // gets the indexes of all stage II cards that aren't placed
+      // by a specific adversary
       const indices = d.reduce((acc, card, index) => {
-        if (card.stage === 2 && card.cardSymbol == card.stage) {
+        if (card.stage === 2) {
           acc.push(index);
         }
         return acc;
       }, []);
+      console.log(`indices of non adversary stage ii cards : ${indices}`);
       // replace the 3rd stage II card that ISN'T an adversary specific
       // card with Coastal card
       d[indices[2]] = new InvaderDeckCard(2, "C");
@@ -325,6 +384,15 @@ var scotland = {
     6: (d) => {
       return d;
     },
+  },
+  fearDeckModification: {
+    0: [0, 0, 0],
+    1: [0, 1, 0],
+    2: [1, 1, 0],
+    3: [1, 2, 1],
+    4: [2, 2, 1],
+    5: [2, 3, 1],
+    6: [3, 3, 1],
   },
 };
 
@@ -357,6 +425,15 @@ var sweden = {
     6: (d) => {
       return d;
     },
+  },
+  fearDeckModification: {
+    0: [0, 0, 0],
+    1: [0, 0, 0],
+    2: [0, 1, 0],
+    3: [0, 1, 0],
+    4: [0, 1, 1],
+    5: [1, 1, 1],
+    6: [1, 1, 2],
   },
 };
 

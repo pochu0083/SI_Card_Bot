@@ -27,6 +27,7 @@ var help =
 	\n -scenario (front/back) [keywords] \
 	\n -invaderdeck (leadingAdversary leadingAdversaryLevel supportingAdversary supportingAdversaryLevel) \
 	\n -progression (spirit) \
+	\n -fearDeck (leadingAdversary leadingAdversaryLevel supportingAdversary supportingAdversaryLevel) \
 	```\
 	";
 

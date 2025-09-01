@@ -39,3 +39,4 @@ Discord App for Spirit island
 - -scenario (front/back) [keywords]
 - -invaderdeck (leadingAdversary leadingAdversaryLevel supportingAdversary supportingAdversaryLevel)
 - -progression (spirit)
+- -fearDeck (leadingAdversary leadingAdversaryLevel supportingAdversary supportingAdversaryLevel)

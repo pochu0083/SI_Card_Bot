@@ -40,7 +40,6 @@ module.exports = {
       // checks if there's a corresponding adversary for the leading adversary search string
       let leadingAdversary;
       let leadingAdversaryFound = false;
-
       for (const [name, adversary] of ad.ad) {
         // if there is a panel with that string in the title, return it
         // checks for exact title matches to avoid Prussia - Russia problem
@@ -131,10 +130,16 @@ module.exports = {
       // hardcoded check for applying HLC reminder card after constructing
       // deck - not the most elegant way but it's just HLC that's awkward
       // for now so
-      if (
-        supportingAdversary.title == "habsburg_livestock" ||
-        leadingAdversary.title == "habsburg_livestock"
-      ) {
+      const hasSupportingHLC =
+        supportingAdversary &&
+        supportingAdversary.title === "habsburg_livestock" &&
+        supportingAdversary.adversaryLevel >= 5;
+      const hasLeadingHLC =
+        leadingAdversary &&
+        leadingAdversary.title === "habsburg_livestock" &&
+        leadingAdversary.adversaryLevel >= 5;
+
+      if (hasSupportingHLC || hasLeadingHLC) {
         const hlcReminderCard = new InvaderDeckCard(
           0,
           "Wave of Immigration Reminder",

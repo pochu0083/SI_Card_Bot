@@ -38,11 +38,13 @@ var habsburgmining = {
     // THIS DOES NOT REMOVE THE COASTAL LANDS CARD FOR SCOTLAND DOUBLES
     4: (d) => {
       const indices = d.reduce((acc, card, index) => {
+        // gets the indexes of all the non-adversary specific Stage II cards
         if (card.stage === 2 && card.stage == card.cardSymbol) {
           acc.push(index);
         }
         return acc;
       }, []);
+      // replaces the 2nd non adversary specific Stage II card with a Salt Deposits card
       d[indices[1]] = new InvaderDeckCard(2, "S");
       return d;
     },
@@ -290,12 +292,15 @@ var scotland = {
       return d;
     },
     2: (d) => {
+      // gets the indexes of all stage II cards that aren't placed
+      // by a specific adversary
       const indices = d.reduce((acc, card, index) => {
-        if (card.stage === 2 && card.cardSymbol == card.stage) {
+        if (card.stage === 2) {
           acc.push(index);
         }
         return acc;
       }, []);
+      console.log(`indices of non adversary stage ii cards : ${indices}`);
       // replace the 3rd stage II card that ISN'T an adversary specific
       // card with Coastal card
       d[indices[2]] = new InvaderDeckCard(2, "C");

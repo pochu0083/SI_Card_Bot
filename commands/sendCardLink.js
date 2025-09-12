@@ -1,4 +1,5 @@
 const levenshtein = require("js-levenshtein");
+const draw = require("./draw.js");
 
 function getCardName(input, availableNames, weightOfSizediff = 0.8) {
   var target = cleanInput(input);
@@ -54,7 +55,14 @@ async function sendCardLink(
   console.log(cardName);
   if (cardName) {
     if (cardName in aliases) {
-      cardName = aliases[cardName];
+      if (typeof aliases[cardName] === "string") {
+        cardName = aliases[cardName];
+      } else {
+        const matches = draw.capitalizeTheFirstLetterOfEachWord(aliases[cardName]);
+        var message = "Your search matched several cards, please specify:";
+        message += matches.forEach((s) => "\n- " + s);
+        return await msg.channel.send(message);
+      }
     }
     return await msg.channel.send(basePath + cardName + ".webp");
   } else {

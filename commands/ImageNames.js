@@ -17,7 +17,8 @@ for(var item of imageList){
 result
 
 #3. Note that currently SICK cannot filter on JUST blight cards, so you may need to manually sanitise the results to exclude
-blighted island events if you're adding more blight cards (i.e. type:still !event or type:blight !event)
+blighted island events if you're adding more blight cards (i.e. type:still type:!event or type:blight type:!event)
+or use anchors (type:/blighted island$/)
 
 */
 
@@ -549,6 +550,7 @@ var blightedIsland = [
   "all_things_weaken",
   "thriving_communities",
   "power_corrodes_the_spirit",
+  "untended_land_crumbles",
   "attenuated_essence",
   "blight_corrodes_the_spirit",
   "burn_brightest_before_the_end",

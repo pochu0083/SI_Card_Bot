@@ -123,7 +123,8 @@ function sampleFromArray(arr, n) {
 /**
  * returns a capitalised version of the input string
  * TODO: move this to a collection of other relevant string manipulation methods
- * @param {*} list
+ * TODO: change function to change A string rather than a collection
+ * @param {*} list -> list of strings to format
  * @returns
  */
 function capitalizeTheFirstLetterOfEachWord(list) {

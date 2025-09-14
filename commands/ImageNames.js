@@ -485,9 +485,7 @@ var event = [
 
 var eventAliases = {
   blight_deepens: "the_struggles_of_growth",
-  blight_spreads: [
-    "tightknit_communities", "wellprepared_explorers"
-  ],
+  blight_spreads: ["tightknit_communities", "wellprepared_explorers"],
   cooperation_among_towns: "coastal_towns_multiply",
   courage_of_the_crowd: "no_bravery_without_numbers",
   cultures_mix_and_clash: "relentless_optimism",
@@ -503,7 +501,8 @@ var eventAliases = {
   foreign_dignitaries_visit: "invested_aristocracy",
   fortification: "strange_tales_attract_explorers",
   increasing_aggression: [
-    "interesting_discoveries", "mapmakers_chart_the_wild"
+    "interesting_discoveries",
+    "mapmakers_chart_the_wild",
   ],
   lands_hollow_of_promise: "provincial_seat",
   lethargy_and_degeneration: "influx_of_settlers",
@@ -524,7 +523,8 @@ var eventAliases = {
   the_center_crumbles: "putting_down_roots",
   the_lands_bounty_exhausted: "fortuneseekers",
   the_worlds_vibrance_fades: [
-    "wounded_lands_attract_explorers", "accumulated_devastation"
+    "wounded_lands_attract_explorers",
+    "accumulated_devastation",
   ],
   urbanization: "wave_of_reconnaissance",
   voracious_consumption: "seek_new_farmland",

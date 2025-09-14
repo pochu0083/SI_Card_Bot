@@ -41,6 +41,15 @@ function getPerfectMatch(input, availableNames) {
   return result;
 }
 
+/**
+ * Returns the SICK link given a card name
+ * @param {*} msg
+ * @param {*} input
+ * @param {*} availableNames
+ * @param {*} basePath
+ * @param {*} aliases
+ * @returns
+ */
 async function sendCardLink(
   msg,
   input,
@@ -52,21 +61,23 @@ async function sendCardLink(
     input,
     [].concat(availableNames).concat(Object.keys(aliases)),
   );
-  console.log(cardName);
   if (cardName) {
     if (cardName in aliases) {
       if (typeof aliases[cardName] === "string") {
         cardName = aliases[cardName];
+        // handling cases where event cards share an alias
       } else {
-        const matches = draw.capitalizeTheFirstLetterOfEachWord(aliases[cardName]);
+        const matches = draw.capitalizeTheFirstLetterOfEachWord(
+          aliases[cardName],
+        );
         var message = "Your search matched several cards, please specify:";
-        message += matches.forEach((s) => "\n- " + s);
+        message += matches.map((s) => "\n- " + s).join("");
         return await msg.channel.send(message);
       }
     }
     return await msg.channel.send(basePath + cardName + ".webp");
   } else {
-    return await msg.channel.send("Incorrect name, try using !search");
+    return await msg.channel.send("Incorrect name, try using -search");
   }
 }
 

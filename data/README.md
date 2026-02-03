@@ -51,6 +51,12 @@ node scripts/updateCardsMajorFromCardDb.js
 node scripts/updateCardsMinorFromCardDb.js
 ```
 
+**To update unique rows from card_db.csv** (url, name_zh_tw, name_zh_cn):
+
+```bash
+node scripts/updateCardsUniqueFromCardDb.js
+```
+
 ---
 
 ## Name CSVs (spirits, adversaries, aspects, scenarios, incarna)
@@ -71,6 +77,12 @@ node exportNamesCsv.js
 ```
 
 This writes `data/spirits.csv`, `data/adversaries.csv`, `data/aspects.csv`, `data/scenarios.csv`, and `data/incarna.csv`. Fill `name_zh_tw` and `name_zh_cn` as needed.
+
+**To update spirits.csv from card_db.csv** (each spirit has two rows in card_db: first = front image, second = back image; sets `image_urls` = front;back, `name_zh_tw`, `name_zh_cn`):
+
+```bash
+node scripts/updateSpiritsFromCardDb.js
+```
 
 **To update scenarios.csv from card_db.csv** (each scenario has two rows in card_db: first = front URL, second = back URL; sets `image_urls` = front;back, `name_zh_tw`, `name_zh_cn`):
 

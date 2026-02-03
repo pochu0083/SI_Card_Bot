@@ -119,7 +119,7 @@ module.exports = {
         }
       }
       } else {
-      var numAspectCard = null;
+      numAspectCard = null;
       if (!isNaN(args[args.length - 1])) {
         numAspectCard = parseInt(args.pop());
       }

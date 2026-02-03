@@ -82,6 +82,8 @@ This writes `data/spirits.csv`, `data/adversaries.csv`, `data/aspects.csv`, `dat
 
 **extra.csv** — One row per spirit with an extra panel image. Columns: `key`, `name`, `url`, `name_zh_tw`, `name_zh_cn`. The `-extra (spirit)` command looks up by spirit name (or Chinese) and sends the image URL.
 
+**reminder.csv** — One row per reminder. Columns: `key`, `name`, `url`, `name_zh_tw`, `name_zh_cn`. The `-reminder (name)` command looks up by name (or Chinese) and sends the image URL.
+
 **To update power_progression.csv from card_db.csv** (Progression rows; matches by spirit name; sets `url`, `name_zh_tw`, `name_zh_cn`):
 
 ```bash
@@ -124,5 +126,6 @@ node scripts/updateScenariosFromCardDb.js
 | `-aid [base, je, ni]` | player_aids.csv | Player aid card images; keywords: base, je, ni |
 | `-progression (spirit)` | power_progression.csv | Power progression image URL by spirit name; Chinese search via name_zh_tw, name_zh_cn |
 | `-extra (spirit)` | extra.csv | Extra panel image URL by spirit name; Chinese search via name_zh_tw, name_zh_cn |
+| `-reminder (name)` | reminder.csv | Reminder image URL by name; Chinese search via name_zh_tw, name_zh_cn |
 
 **Cards (power, minor, major, unique, blight, event, fear)** use `cards.csv` only (see above); they already support Chinese via `name_zh_tw` and `name_zh_cn` and return the single `url` from that CSV.

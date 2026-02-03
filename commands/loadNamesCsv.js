@@ -365,6 +365,83 @@ function loadExtraCsv() {
   return result;
 }
 
+/**
+ * Reminder CSV: key, name, url, name_zh_tw, name_zh_cn.
+ * One image URL per reminder. Search by name or Chinese.
+ */
+function loadReminderCsv() {
+  const key = "reminder.csv";
+  if (cache[key]) return cache[key];
+
+  const resolved = path.join(DATA_DIR, "reminder.csv");
+  const result = {
+    loaded: false,
+    rows: [],
+    nameToRow: {},
+    getSearchNames() {
+      return Array.from(Object.keys(this.nameToRow));
+    },
+  };
+
+  if (!fs.existsSync(resolved)) {
+    cache[key] = result;
+    return result;
+  }
+
+  const text = fs.readFileSync(resolved, "utf-8");
+  const lines = text.split(/\r?\n/).filter((line) => line.trim());
+  if (lines.length < 2) {
+    cache[key] = result;
+    return result;
+  }
+
+  const header = parseCsvLine(lines[0]);
+  const keyIdx = header.indexOf("key");
+  const nameIdx = header.indexOf("name");
+  const urlIdx = header.indexOf("url");
+  const twIdx = header.indexOf("name_zh_tw");
+  const cnIdx = header.indexOf("name_zh_cn");
+
+  if (nameIdx === -1 || urlIdx === -1) {
+    cache[key] = result;
+    return result;
+  }
+
+  for (let i = 1; i < lines.length; i++) {
+    const fields = parseCsvLine(lines[i]);
+    const rowKey = keyIdx >= 0 ? (fields[keyIdx] || "").trim() : "";
+    const name = (fields[nameIdx] || "").trim();
+    const url = (fields[urlIdx] || "").trim();
+    const nameZhTw = twIdx >= 0 ? (fields[twIdx] || "").trim() : "";
+    const nameZhCn = cnIdx >= 0 ? (fields[cnIdx] || "").trim() : "";
+
+    if (!name || !url) continue;
+
+    const row = {
+      key: rowKey,
+      name,
+      url,
+      name_zh_tw: nameZhTw,
+      name_zh_cn: nameZhCn,
+    };
+    result.rows.push(row);
+
+    const nKey = rowKey ? normalizeSearch(rowKey) : null;
+    const nName = normalizeSearch(name);
+    const nTw = nameZhTw ? normalizeSearch(nameZhTw) : null;
+    const nCn = nameZhCn ? normalizeSearch(nameZhCn) : null;
+
+    if (nKey) result.nameToRow[nKey] = row;
+    result.nameToRow[nName] = row;
+    if (nTw) result.nameToRow[nTw] = row;
+    if (nCn) result.nameToRow[nCn] = row;
+  }
+
+  result.loaded = result.rows.length > 0;
+  cache[key] = result;
+  return result;
+}
+
 module.exports = {
   normalizeSearch,
   parseImageUrls,
@@ -376,4 +453,5 @@ module.exports = {
   loadAspectsCsv,
   loadPowerProgressionCsv,
   loadExtraCsv,
+  loadReminderCsv,
 };

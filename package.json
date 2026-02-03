@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "start": "node index.js",
-    "export-cards": "node exportCardsCsv.js"
+    "export-cards": "node exportCardsCsv.js",
+    "test:csv": "node scripts/runUniqueSpiritAspectProgressionExtraTests.js"
   },
   "engines": {
     "npm": "10.x",

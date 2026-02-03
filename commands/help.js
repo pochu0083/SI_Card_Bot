@@ -29,6 +29,7 @@ var help =
 	\n -invaderdeck (leadingAdversary leadingAdversaryLevel supportingAdversary supportingAdversaryLevel) \
 	\n -progression (spirit) \
 	\n -extra (spirit) \
+	\n -reminder (name) \
 	\n -fearDeck (leadingAdversary leadingAdversaryLevel supportingAdversary supportingAdversaryLevel) \
 	```\
 	";

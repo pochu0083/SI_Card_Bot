@@ -41,6 +41,7 @@ Discord App for Spirit Island
 - -invaderdeck (leadingAdversary leadingAdversaryLevel supportingAdversary supportingAdversaryLevel)
 - -progression (spirit)
 - -extra (spirit) — Extra panel image for a spirit
+- -reminder (name) — Reminder image by name (data/reminder.csv)
 - -fearDeck (leadingAdversary leadingAdversaryLevel supportingAdversary supportingAdversaryLevel)
 
 ### Data and Chinese support

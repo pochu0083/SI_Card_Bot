@@ -1,5 +1,4 @@
-const s = require("./sendCardLink");
-const ImageNames = require("./ImageNames.js");
+const s = require("./sendCardLink.js");
 
 module.exports = {
   name: "fear",
@@ -7,13 +6,6 @@ module.exports = {
   public: true,
 
   async execute(msg, args) {
-    await msg.channel.send(
-      s.sendCardLink(
-        msg,
-        args,
-        ImageNames.fear,
-        "https://sick.oberien.de/imgs/fears/",
-      ),
-    );
+    await s.sendCardLinkFromCsv(msg, args, "fear");
   },
 };

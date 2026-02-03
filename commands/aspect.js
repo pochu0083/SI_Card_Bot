@@ -1,13 +1,13 @@
 const { getCardName } = require("./sendCardLink.js");
 const { aspectsNames, spirits, aspects } = require("./aspectNames.js");
-const { DiscordAPIError } = require("discord.js");
+const namesCsv = require("./loadNamesCsv.js");
 
 module.exports = {
   name: "aspect",
   description:
     "Lists all aspects for a given spirit or shows any cards for a given aspect.",
   public: true, //has to be true to show as a command
-  execute(msg, args) {
+  async execute(msg, args) {
     // TODO: refactor this whole command to be a bit cleaner, the logic's tangled and could easily be
     // extrapolated into separate function calls and add exception handling
     console.log("aspect command");
@@ -15,15 +15,61 @@ module.exports = {
     var messages = "";
 
     if (args.length == 0) {
+      const csv = namesCsv.loadAspectsCsv();
+      if (csv.loaded) {
+        const bySpirit = {};
+        for (const row of csv.rows) {
+          if (!bySpirit[row.spirit]) bySpirit[row.spirit] = [];
+          bySpirit[row.spirit].push(row.name);
+        }
+        messages = "Currently, the following spirits have aspects:\n";
+        for (const [spirit, aspectNames] of Object.entries(bySpirit)) {
+          messages += spirit + ": " + aspectNames.join(", ") + "\n";
+        }
+        return msg.channel.send(messages);
+      }
       messages = "Currently, the following spirits have aspects: \n";
       for (var s = 0; s < spirits.length; s++) {
         messages += spirits[s] + ": ";
         messages = listAspect(messages, parseInt(s));
       }
-    } else if (args.length == 1) {
-      // check if argument is a valid aspect
-      aspectQuery = args[0];
-      var found = false;
+      return msg.channel.send(messages);
+    }
+
+    {
+      // args.length >= 1: try CSV first (Chinese keywords + image URLs from data/aspects.csv)
+      let numAspectCard = null;
+      const argsCopy = args.slice();
+      if (argsCopy.length > 1 && !isNaN(parseInt(argsCopy[argsCopy.length - 1]))) {
+        numAspectCard = parseInt(argsCopy.pop());
+      }
+      const input = argsCopy.join(" ").trim();
+      const csv = namesCsv.loadAspectsCsv();
+      if (csv.loaded && input) {
+        const searchNames = csv.getSearchNames();
+        const matched = getCardName(input, searchNames);
+        if (matched) {
+          const rowsByAlias = csv.aliasToRows[matched];
+          const rowByName = csv.nameToRow[matched];
+          if (rowsByAlias && rowsByAlias.length > 1) {
+            const list = rowsByAlias.map((r) => `${r.spirit} ${r.name}`).join(", ");
+            return msg.channel.send("Your search matched several aspects, please specify:\n- " + list);
+          }
+          const row = rowByName || (rowsByAlias && rowsByAlias[0]);
+          if (row && row.urls && row.urls.length > 0) {
+            const urls = row.urls;
+            const idx = numAspectCard != null && numAspectCard >= 1 && numAspectCard <= urls.length
+              ? numAspectCard - 1
+              : 0;
+            return msg.channel.send(urls[idx]);
+          }
+        }
+      }
+
+      // Fall back to aspectNames.js
+      if (args.length == 1) {
+        aspectQuery = args[0];
+        var found = false;
 
       // if the param contains any emoji OR starts with <, assume it's an emoji
       if (
@@ -72,16 +118,13 @@ module.exports = {
           messages = listAspect(messages, parseInt(s));
         }
       }
-    } else {
-      // if the last argument is a number, pop it and use it to query for a specific aspect card
+      } else {
+      var numAspectCard = null;
       if (!isNaN(args[args.length - 1])) {
-        var numAspectCard = parseInt(args.pop());
+        numAspectCard = parseInt(args.pop());
       }
-
-      // then, concat the remaining arguments and search for an aspect with that name
       aspectQuery = args.join(" ").toLowerCase();
-      // check if the FIRST argument is an aspect
-      aspect = findAspect(aspectQuery);
+      var aspect = findAspect(aspectQuery);
       if (aspect) {
         // if it is, check if it has >1 aspect card
         if (aspect.panel.length == 1) {
@@ -92,7 +135,8 @@ module.exports = {
         else {
           // sanitising input
           if (
-            numAspectCard == NaN ||
+            numAspectCard == null ||
+            Number.isNaN(numAspectCard) ||
             numAspectCard > aspect.panel.length ||
             numAspectCard < 1
           ) {
@@ -107,13 +151,14 @@ module.exports = {
         messages = "Aspect could not be found";
       }
     }
+    }
 
     if (Array.isArray(messages)) {
       for (const message_ind of messages) {
-        msg.channel.send(message_ind);
+        await msg.channel.send(message_ind);
       }
     } else {
-      msg.channel.send(messages);
+      await msg.channel.send(messages);
     }
   },
 };

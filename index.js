@@ -1,11 +1,19 @@
 /*
-    Author: Carlo I Gonzalez "SpeedyOlrac"
-    Desciption: THis bot is made to help spirit island card and spirit panel look ups.
-        Now has random Spirit and adversary fuctions.
-        Creates link to the Spirit ISland FAQ page.
-        Expand Search to other commands
-    Version 2.8.2 role bot  
-*/
+ * SI_Card_Bot — Discord bot for Spirit Island card and spirit panel lookups.
+ *
+ * Original author: Carlo I Gonzalez "SpeedyOlrac"
+ * Extended/maintained by: ChihTang Chang "pochu0083"
+ *
+ * Features:
+ *   - Card search (power, minor, major, unique, blight, event, fear)
+ *   - Spirit, adversary, aspect, scenario, incarna panels
+ *   - Random spirit, adversary, double, scenario, board
+ *   - FAQ links, invader/fear deck, progression
+ *   - Chinese support (繁體/简体) via data CSVs; -aid [base|je|ni] for player aids
+ *   - Data updatable from card_db.csv (see data/README.md)
+ *
+ * Version: 2.9.0 (extended)
+ */
 
 require("dotenv").config();
 const fs = require("fs");

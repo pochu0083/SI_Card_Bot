@@ -1,2 +1,36 @@
+# Environment and secrets (never commit)
 .env
+.env.local
+.env.*.local
+
+# Dependencies
 node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Lock files (e.g. LibreOffice lock)
+.~lock.*
+
+# Test / coverage
+coverage/
+.nyc_output/
+
+# Optional: uncomment if you don't want to track local data copies
+# data/*.csv

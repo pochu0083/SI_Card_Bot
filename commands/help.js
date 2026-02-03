@@ -25,6 +25,7 @@ var help =
 	\n -healing [keyword] \
 	\n -incarna [keyword] (front/back) \
 	\n -scenario (front/back) [keywords] \
+	\n -aid [base|je|ni] \
 	\n -invaderdeck (leadingAdversary leadingAdversaryLevel supportingAdversary supportingAdversaryLevel) \
 	\n -progression (spirit) \
 	\n -fearDeck (leadingAdversary leadingAdversaryLevel supportingAdversary supportingAdversaryLevel) \

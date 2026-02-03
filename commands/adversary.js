@@ -1,42 +1,21 @@
 const ad = require("./AdversaryNames.js");
+const { getCardName } = require("./sendCardLink.js");
+const namesCsv = require("./loadNamesCsv.js");
 
 module.exports = {
   name: "adversary",
   description: "Get a single adversary panel",
   public: true,
   async execute(msg, args) {
-    var panel = "";
-    var found = false;
-    var list = [];
-    // TODO: migrate the logic for checking an invader panel by name/alias to separate class
-    // to minimise duplication
-    // if an adversary parameter is provided
-    if (args.length != 0) {
-      const searchString = args[0].toLowerCase();
-      for (const [name, adversary] of ad.ad) {
-        // if there is a panel with that string in the title, return it
-        // checks for exact title matches to avoid Prussia - Russia problem
-        if (adversary.title.toLowerCase() == searchString) {
-          panel = adversary.panel;
-          found = true;
-          break;
-        }
-        // alias
-        else {
-          for (const alias of adversary.alias) {
-            if (alias.toLowerCase().indexOf(searchString) >= 0) {
-              panel = adversary.panel;
-              found = true;
-              break;
-            }
-          }
-        }
+    // No args: list adversaries (from CSV if loaded, else from AdversaryNames)
+    if (args.length === 0) {
+      const csv = namesCsv.loadAdversariesCsv();
+      if (csv.loaded) {
+        const list = csv.rows.map((r) => `* ${r.name} (${r.key})`).join("\n");
+        return msg.channel.send("Choose an adversary:\n" + list);
       }
-    }
-    // if no match found or no argument provided, assume they want a list of adversaries
-    if ((args.length == 0) | !found) {
-      panel = "Choose an adversary: \n";
-      for (const [name, adversary] of ad.ad) {
+      let panel = "Choose an adversary: \n";
+      for (const [, adversary] of ad.ad) {
         panel +=
           "* " +
           adversary.name +
@@ -46,8 +25,37 @@ module.exports = {
           adversary.alias.join(" , ") +
           ")\n";
       }
+      return msg.channel.send(panel);
     }
 
-    msg.channel.send(panel);
+    const input = args.join(" ").trim();
+
+    // Try CSV first (Chinese keywords + image URL from data/adversaries.csv)
+    const csv = namesCsv.loadAdversariesCsv();
+    if (csv.loaded) {
+      const searchNames = csv.getSearchNames();
+      const matched = getCardName(input, searchNames);
+      if (matched) {
+        const row = csv.nameToRow[matched];
+        if (row && row.urls && row.urls.length > 0) {
+          return msg.channel.send(row.urls[0]);
+        }
+      }
+    }
+
+    // Fall back to AdversaryNames.js
+    const searchString = input.toLowerCase();
+    for (const [, adversary] of ad.ad) {
+      if (adversary.title.toLowerCase() === searchString) {
+        return msg.channel.send(adversary.panel);
+      }
+      for (const alias of adversary.alias) {
+        if (alias.toLowerCase().indexOf(searchString) >= 0) {
+          return msg.channel.send(adversary.panel);
+        }
+      }
+    }
+
+    msg.channel.send("Adversary not found. Use -adversary with no args to list options.");
   },
 };

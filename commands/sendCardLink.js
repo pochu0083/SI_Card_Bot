@@ -1,5 +1,6 @@
 const levenshtein = require("js-levenshtein");
 const draw = require("./draw.js");
+const csvLoader = require("./loadCardCsv.js");
 
 function getCardName(input, availableNames, weightOfSizediff = 0.8) {
   var target = cleanInput(input);
@@ -90,7 +91,41 @@ function cleanInput(args) {
     .replace(" ", "_");
 }
 
+/**
+ * Resolve card from CSV and send URL (or list if alias matches multiple).
+ * typeFilter: 'major' | 'minor' | 'unique' | 'power' | 'event' | 'fear' | 'blight' | null (all)
+ */
+async function sendCardLinkFromCsv(msg, input, typeFilter = null) {
+  const { nameToRow, aliasToRows, loaded } = csvLoader.loadCardCsv();
+  if (!loaded) {
+    return await msg.channel.send(
+      "Card data not loaded. Add data/cards.csv (run: node exportCardsCsv.js) or set CARDS_CSV.",
+    );
+  }
+  const availableNames = csvLoader.getAllSearchNames(typeFilter);
+  const cardName = getCardName(input, availableNames);
+  if (!cardName) {
+    return await msg.channel.send("Incorrect name, try using -search");
+  }
+  const rowByName = nameToRow[cardName];
+  if (rowByName) {
+    return await msg.channel.send(rowByName.url);
+  }
+  const rowsByAlias = aliasToRows[cardName];
+  if (rowsByAlias) {
+    if (rowsByAlias.length === 1) {
+      return await msg.channel.send(rowsByAlias[0].url);
+    }
+    const matches = draw.capitalizeTheFirstLetterOfEachWord(rowsByAlias.map((r) => r.name));
+    var message = "Your search matched several cards, please specify:";
+    message += matches.map((s) => "\n- " + s).join("");
+    return await msg.channel.send(message);
+  }
+  return await msg.channel.send("Incorrect name, try using -search");
+}
+
 module.exports = {
   getCardName: getCardName,
   sendCardLink: sendCardLink,
+  sendCardLinkFromCsv: sendCardLinkFromCsv,
 };

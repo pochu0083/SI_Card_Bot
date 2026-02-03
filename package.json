@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "node index.js"
+    "start": "node index.js",
+    "export-cards": "node exportCardsCsv.js"
   },
   "engines": {
     "npm": "10.x",

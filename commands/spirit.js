@@ -1,6 +1,7 @@
 const spirits = require("./spiritNames.js").spirits;
 const levenshtein = require("js-levenshtein");
-const globals = require("../globals.js");
+const { getCardName } = require("./sendCardLink.js");
+const namesCsv = require("./loadNamesCsv.js");
 
 module.exports = {
   name: "spirit",
@@ -12,14 +13,13 @@ module.exports = {
         throw new Error("Please provide at least 3 letters to query with.");
       }
 
-      // Handle result-modifying args
       const mods = {
         front: false,
         back: false,
         unique: false,
       };
 
-      for (arg in mods) {
+      for (const arg of Object.keys(mods)) {
         const idx = args.indexOf(arg);
         if (idx >= 0) {
           mods[arg] = true;
@@ -27,14 +27,31 @@ module.exports = {
         }
       }
 
-      const possibleSpirits = searchForSpirit(args.join(" ").toLowerCase());
+      const input = args.join(" ").trim();
+      if (!input) {
+        throw new Error("Please provide at least 3 letters to query with.");
+      }
 
-      // if levenshtein returns a single spirit, return that
+      // Try CSV first (Chinese keywords + image URLs from data/spirits.csv)
+      const csv = namesCsv.loadSpiritsCsv();
+      if (csv.loaded) {
+        const searchNames = csv.getSearchNames();
+        const matched = getCardName(input, searchNames);
+        if (matched) {
+          const row = csv.nameToRow[matched];
+          if (row && row.urls && row.urls.length > 0) {
+            const idx = mods.back && row.urls.length > 1 ? 1 : 0;
+            return await msg.channel.send(row.urls[idx]);
+          }
+        }
+      }
+
+      // Fall back to spiritNames.js
+      const possibleSpirits = searchForSpirit(input.toLowerCase());
       if (possibleSpirits.length === 1) {
         return await sendSpirit(mods, msg, possibleSpirits[0]);
-      } else {
-        throw new Error("Try again with a more specific string.");
       }
+      throw new Error("Try again with a more specific string.");
     } catch (e) {
       console.log(e);
       return msg.channel.send(e.toString());
@@ -61,7 +78,7 @@ function searchForSpirit(searchStringParam) {
     if (spirit.name.toLowerCase().indexOf(searchString) >= 0) {
       foundSpirits.push(spirit);
     } else {
-      for (alias of spirit.aliases) {
+      for (const alias of spirit.aliases) {
         if (alias.indexOf(searchString) >= 0) {
           foundSpirits.push(spirit);
         }
@@ -72,7 +89,7 @@ function searchForSpirit(searchStringParam) {
   let smallestDistance = Infinity;
   // If not found, find by levenshtein distance on all available substrings
   if (foundSpirits.length === 0) {
-    for (spirit of spirits) {
+    for (const spirit of spirits) {
       const spiritName = spirit.name.toLowerCase();
       for (let i = 0; i <= spiritName.length - searchString.length; i++) {
         const subString = spiritName.substring(i, i + searchString.length);
@@ -92,7 +109,7 @@ function searchForSpirit(searchStringParam) {
     return foundSpirits;
   } else if (foundSpirits.length > 1) {
     // try to filter the ones found to spirits which have that EXACT word (ignoring apostrophised plurals for Stone's), not just a substring match
-    uniqueSpirits = foundSpirits.filter(
+    const uniqueSpirits = foundSpirits.filter(
       (foundSpirit) =>
         sanitiseSpiritName(foundSpirit.name).indexOf(searchString) > -1,
     );
@@ -125,7 +142,7 @@ async function sendSpirit(mods, msg, foundSpirit) {
   // TODO: check if getting all spirit's uniques is still wanted
   if (mods.unique) {
     const uniques = foundSpirit.uniques;
-    for (unique of uniques) {
+    for (const unique of uniques) {
       let basePath = "https://sick.oberien.de/imgs/powers/";
       //msg.channel.send(basePath + unique  + '.webp');
     }

@@ -1,6 +1,5 @@
 // basically just an alias for draw that only ever returns one
 // also returns the URL from SICK rather than just the name
-const ImageNames = require("./ImageNames.js");
 const draw = require("./draw.js");
 const s = require("./sendCardLink.js");
 
@@ -18,25 +17,11 @@ module.exports = {
       }
 
       let drawableCards = ["minor", "major", "fear", "event"];
-      drawnType = args[0].toLowerCase();
+      const drawnType = args[0].toLowerCase();
 
       if (drawableCards.includes(drawnType)) {
-        // working out what url to hit on SICK
-        // TODO: find where else this is used and define in environment rather than hardcode URIs
-        let urlStub;
-        if (drawnType == "minor" || drawnType == "major") {
-          urlStub = "powers";
-        } else {
-          urlStub = `${drawnType}s`;
-        }
-
-        result = draw.getRandomDraws(drawnType, 1);
-        await s.sendCardLink(
-          msg,
-          result,
-          ImageNames[drawnType],
-          `https://sick.oberien.de/imgs/${urlStub}/`,
-        );
+        const result = draw.getRandomDraws(drawnType, 1);
+        await s.sendCardLinkFromCsv(msg, result, drawnType);
       } else {
         throw new Error(
           "Please specify a type of card to draw (minor, major, fear or event) (defaults to 4 cards drawn).",

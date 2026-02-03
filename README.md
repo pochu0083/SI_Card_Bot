@@ -40,6 +40,7 @@ Discord App for Spirit Island
 - -aid [base | je | ni] — Player aid card images (base = Base game, je = Jagged Earth, ni = Nature Incarnate)
 - -invaderdeck (leadingAdversary leadingAdversaryLevel supportingAdversary supportingAdversaryLevel)
 - -progression (spirit)
+- -extra (spirit) — Extra panel image for a spirit
 - -fearDeck (leadingAdversary leadingAdversaryLevel supportingAdversary supportingAdversaryLevel)
 
 ### Data and Chinese support

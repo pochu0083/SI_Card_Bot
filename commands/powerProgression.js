@@ -1,7 +1,10 @@
 /**
- * Sends an image of the power progression for that spirit
+ * Sends an image of the power progression for that spirit.
+ * Resolves spirit by name (or Chinese) from data/power_progression.csv, then falls back to spiritNames.js.
  */
 const spirit = require("./spirit.js");
+const { getCardName } = require("./sendCardLink.js");
+const namesCsv = require("./loadNamesCsv.js");
 
 module.exports = {
   name: "progression",
@@ -14,25 +17,33 @@ module.exports = {
         throw new Error("Please provide at least 3 letters to query with.");
       }
 
-      // retrieves the closest spirit to the search term
-      const possibleSpirits = spirit.searchForSpirit(
-        args.join(" ").toLowerCase(),
-      );
-      let message;
+      const input = args.join(" ").trim();
 
-      // if levenshtein returns a single spirit, return that
-      if (possibleSpirits.length === 1) {
-        const spirit = possibleSpirits[0];
-
-        if (spirit.powerProgression) {
-          message = spirit.powerProgression;
-        } else {
-          message = `${spirit.name} (${spirit.emote}) does not have a power progression.`;
+      // Try CSV first (spirit name or Chinese from data/power_progression.csv)
+      const csv = namesCsv.loadPowerProgressionCsv();
+      if (csv.loaded) {
+        const searchNames = csv.getSearchNames();
+        const matched = getCardName(input, searchNames);
+        if (matched) {
+          const row = csv.nameToRow[matched];
+          if (row && row.url) {
+            return msg.channel.send(row.url);
+          }
         }
-        return msg.channel.send(message);
-      } else {
-        throw new Error("Try again with a more specific string.");
       }
+
+      // Fall back to spiritNames.js
+      const possibleSpirits = spirit.searchForSpirit(input.toLowerCase());
+      if (possibleSpirits.length === 1) {
+        const spiritObj = possibleSpirits[0];
+        if (spiritObj.powerProgression) {
+          return msg.channel.send(spiritObj.powerProgression);
+        }
+        return msg.channel.send(
+          `${spiritObj.name} (${spiritObj.emote}) does not have a power progression.`,
+        );
+      }
+      throw new Error("Try again with a more specific string.");
     } catch (e) {
       console.log(e);
       return msg.channel.send(e.toString());

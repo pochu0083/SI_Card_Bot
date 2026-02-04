@@ -46,8 +46,16 @@ Discord App for Spirit Island
 
 ### Data and Chinese support
 
-- **Cards** (`data/cards.csv`) — Power, minor, major, unique, blight, event, fear. Supports search by English and by **Traditional (繁體)** / **Simplified (简体)** Chinese when `name_zh_tw` and `name_zh_cn` are filled.
-- **Name CSVs** (`data/spirits.csv`, `adversaries.csv`, `aspects.csv`, `scenarios.csv`, `incarna.csv`, `player_aids.csv`) — Provide Chinese keywords and image URLs for -spirit, -adversary, -aspect, -scenario, -incarna, and -aid.
+- **Cards** (`data/cards.csv`) — Power, minor, major, unique, blight, event, fear. Search by English and by **Traditional (繁體)** / **Simplified (简体)** Chinese when `name_zh_tw` and `name_zh_cn` are filled.
+- **Name CSVs** (`data/spirits.csv`, `adversaries.csv`, `aspects.csv`, `scenarios.csv`, `incarna.csv`, `player_aids.csv`) — Chinese keywords and image URLs for -spirit, -adversary, -aspect, -scenario, -incarna, and -aid.
+- **Other CSVs** — `power_progression.csv`, `extra.csv`, `reminder.csv` drive -progression, -extra, and -reminder. All CSVs can be filled from a single source: **`data/card_db.csv`** (Type, English name, Traditional Chinese name, key, url). The scripts in `scripts/` push that data into each target CSV.
 
-To **generate** CSVs from built-in data: `node exportNamesCsv.js` (name CSVs), `node exportCardsCsv.js` (cards).  
-To **update** rows from a `card_db.csv` (URLs + Chinese names), use the scripts in `scripts/` — see **data/README.md** for the full list (events, blight, fear, major, minor, scenarios) and usage.
+**Workflow:** Generate CSVs from built-in data → optionally fill Chinese → update from `card_db.csv` → run tests.
+
+| Step | Command |
+|------|--------|
+| Generate | `node exportNamesCsv.js`, `node exportCardsCsv.js` (project root) |
+| Update from card_db | `node scripts/update*FromCardDb.js` (e.g. `updateCardsMinorFromCardDb.js`, `updateReminderFromCardDb.js`) |
+| Test | `node scripts/run*CsvTests.js` (e.g. `runReminderCsvTests.js`, `runMinorCsvTests.js`) |
+
+Full list of update scripts, CSV columns, and test scripts: **data/README.md**.

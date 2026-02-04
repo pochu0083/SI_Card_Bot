@@ -2,6 +2,26 @@
 
 The bot uses CSVs under `data/` for card lookups, spirit/adversary/aspect panels, progression, extra panels, reminders, and player aids. If a CSV exists and has data, the command uses it (including fuzzy match and Chinese); otherwise it falls back to built-in JS data where applicable.
 
+**Source for URLs and Chinese:** The file `card_db.csv` in this folder is the master source used by the `scripts/update*FromCardDb.js` scripts to fill or overwrite `url`, `name_zh_tw`, and `name_zh_cn` (and sometimes `aliases` / `image_urls`) in the other CSVs. Maintain `card_db.csv` with columns: `Type`, `English name`, `Traditional Chinese name`, `key`, `url` (and optionally Simplified Chinese); then run the appropriate update script(s).
+
+---
+
+## Files in this folder
+
+| File | Purpose |
+|------|--------|
+| **card_db.csv** | Master source: Type, English name, Traditional Chinese name, key, url. Used by all `scripts/update*FromCardDb.js` scripts. |
+| **cards.csv** | Power, minor, major, unique, event, fear, blight card lookups. |
+| **spirits.csv** | Spirit panel(s); front;back image_urls. |
+| **adversaries.csv** | Adversary panel. |
+| **aspects.csv** | Aspect card(s); spirit + aspect_name, multiple URLs per aspect. |
+| **scenarios.csv** | Scenario front;back. |
+| **incarna.csv** | Incarna image(s). |
+| **player_aids.csv** | Player aid cards; keywords base, je, ni. |
+| **power_progression.csv** | One image per spirit (power progression). |
+| **extra.csv** | One extra panel image per spirit. |
+| **reminder.csv** | Reminder cards; image_urls = one URL or front;back. |
+
 ---
 
 ## CSV reference
@@ -100,6 +120,30 @@ node scripts/updateReminderFromCardDb.js
 
 ---
 
+## Testing CSV data
+
+From **project root**, you can run the test scripts in `scripts/` to validate CSV loading and Chinese/URL resolution:
+
+| Script | What it tests |
+|--------|----------------|
+| runMinorCsvTests.js | cards.csv minor type (Chinese + URL). |
+| runMajorCsvTests.js | cards.csv major type. |
+| runEventCsvTests.js | cards.csv events. |
+| runFearCsvTests.js | cards.csv fear. |
+| runBlightCsvTests.js | cards.csv blight. |
+| runUniqueSpiritAspectProgressionExtraTests.js | Unique cards, spirits, aspects, progression, extra. |
+| runAdversaryCsvTests.js | adversaries.csv. |
+| runReminderCsvTests.js | reminder.csv (name/key + Chinese + image_urls). |
+| runScenariosCsvTests.js | scenarios.csv (key/name + Chinese + image_urls). |
+| runIncarnaCsvTests.js | incarna.csv (key/name + image_urls). |
+| runPlayerAidsCsvTests.js | player_aids.csv (base/je/ni + Chinese). |
+
+```bash
+node scripts/runMinorCsvTests.js
+```
+
+---
+
 ## Commands that use these CSVs
 
 | Command | CSV | Purpose |
@@ -114,3 +158,12 @@ node scripts/updateReminderFromCardDb.js
 | -progression (spirit) | power_progression.csv | Power progression image by spirit name |
 | -extra (spirit) | extra.csv | Extra panel image by spirit name |
 | -reminder (name) | reminder.csv | Reminder image(s); front;back when two-sided |
+
+---
+
+## Typical workflow
+
+1. **Generate CSVs from built-in data** (project root): `node exportCardsCsv.js`, `node exportNamesCsv.js` — creates/overwrites CSVs; Chinese columns start empty.
+2. **Optionally fill Chinese** in the CSVs by hand, or use `card_db.csv` as the source.
+3. **Update from card_db.csv**: run the relevant `scripts/update*FromCardDb.js` scripts to push URLs and Chinese from `card_db.csv` into each target CSV.
+4. **Validate**: run `scripts/run*CsvTests.js` to check that lookups and Chinese resolution work.

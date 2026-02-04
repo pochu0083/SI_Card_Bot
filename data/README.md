@@ -1,131 +1,116 @@
 # Card data (CSV)
 
-The bot uses `cards.csv` for card lookups (power, major, minor, event, fear, blight, unique).
+The bot uses CSVs under `data/` for card lookups, spirit/adversary/aspect panels, progression, extra panels, reminders, and player aids. If a CSV exists and has data, the command uses it (including fuzzy match and Chinese); otherwise it falls back to built-in JS data where applicable.
 
-**Columns:** `name`, `url`, `type`, `aliases`, `name_zh_tw`, `name_zh_cn`, `aliases_zh_tw`, `aliases_zh_cn`
+---
 
-- **name** — English slug (used for matching and URL).
-- **url** — Full image URL.
-- **type** — `unique` | `minor` | `major` | `event` | `fear` | `blight`.
-- **aliases** — Semicolon-separated extra English search terms (event search supports this).
-- **name_zh_tw** — Traditional Chinese name (optional); users can search in 繁體中文.
-- **name_zh_cn** — Simplified Chinese name (optional); users can search in 简体中文.
-- **aliases_zh_tw** — Semicolon-separated Traditional Chinese alias phrases (optional); event search supports Chinese alias.
-- **aliases_zh_cn** — Semicolon-separated Simplified Chinese alias phrases (optional).
+## CSV reference
 
-**To generate the full CSV from current ImageNames data**, run from project root:
+### cards.csv
+
+Card lookups: power, major, minor, unique, event, fear, blight.
+
+| Column | Description |
+|--------|-------------|
+| **name** | English slug (matching and URL). |
+| **url** | Full image URL. |
+| **type** | `unique` \| `minor` \| `major` \| `event` \| `fear` \| `blight`. |
+| **aliases** | Semicolon-separated extra English search terms. |
+| **name_zh_tw** / **name_zh_cn** | Traditional / Simplified Chinese (optional). |
+| **aliases_zh_tw** / **aliases_zh_cn** | Semicolon-separated Chinese alias phrases (optional). |
+
+### Name CSVs (panels and aids)
+
+Shared column idea: `key`, `name`, `image_urls` (semicolon-separated, e.g. front;back), `name_zh_tw`, `name_zh_cn`.
+
+| File | Purpose |
+|------|--------|
+| **spirits.csv** | Spirit panel(s); two URLs = front;back. |
+| **adversaries.csv** | Adversary panel. |
+| **aspects.csv** | Aspect card(s); `spirit` + `aspect_name`, multiple URLs per aspect. |
+| **scenarios.csv** | Scenario front;back. |
+| **incarna.csv** | Incarna image(s). |
+| **player_aids.csv** | Player aid cards; keywords base, je, ni. |
+
+### Single-URL / reminder CSVs
+
+| File | Columns | Purpose |
+|------|---------|--------|
+| **power_progression.csv** | key, name, url, name_zh_tw, name_zh_cn | One image per spirit (power progression). |
+| **extra.csv** | key, name, url, name_zh_tw, name_zh_cn | One extra panel image per spirit. |
+| **reminder.csv** | key, name, image_urls, name_zh_tw, name_zh_cn | Reminders; image_urls = one URL or front;back. |
+
+---
+
+## Generate CSVs (from source / ImageNames)
+
+Run from **project root**. These create or overwrite CSVs; you can then fill Chinese columns and/or update from card_db.
+
+| Script | Output | Note |
+|--------|--------|------|
+| **exportCardsCsv.js** | `data/cards.csv` | All cards from ImageNames; `name_zh_tw` / `name_zh_cn` left empty. |
+| **exportNamesCsv.js** | `data/spirits.csv`, `adversaries.csv`, `aspects.csv`, `scenarios.csv`, `incarna.csv` | From command source files; fill Chinese as needed. |
 
 ```bash
 node exportCardsCsv.js
-```
-
-This overwrites `cards.csv` with all cards and event aliases; `name_zh_tw` and `name_zh_cn` are left empty for you to fill.
-
-**To update event rows from card_db.csv** (url, name_zh_tw/cn, aliases, aliases_zh_tw/cn; card_db uses comma to separate name and alias in English/Traditional columns):
-
-```bash
-node scripts/updateCardsEventsFromCardDb.js
-```
-
-**To update blight rows from card_db.csv** (url, name_zh_tw, name_zh_cn):
-
-```bash
-node scripts/updateCardsBlightFromCardDb.js
-```
-
-**To update fear rows from card_db.csv** (url, name_zh_tw, name_zh_cn):
-
-```bash
-node scripts/updateCardsFearFromCardDb.js
-```
-
-**To update major rows from card_db.csv** (url, name_zh_tw, name_zh_cn):
-
-```bash
-node scripts/updateCardsMajorFromCardDb.js
-```
-
-**To update minor rows from card_db.csv** (url, name_zh_tw, name_zh_cn):
-
-```bash
-node scripts/updateCardsMinorFromCardDb.js
-```
-
-**To update unique rows from card_db.csv** (url, name_zh_tw, name_zh_cn):
-
-```bash
-node scripts/updateCardsUniqueFromCardDb.js
+node exportNamesCsv.js
 ```
 
 ---
 
-## Name CSVs (spirits, adversaries, aspects, scenarios, incarna)
+## Update from card_db.csv
 
-These CSVs add **Chinese keyword support** and **image URLs** for the corresponding bot commands. If a CSV exists and has data, the command uses it first (including fuzzy match and Chinese); otherwise it falls back to the built-in JS data.
+Run from **project root**. These update existing CSVs using `data/card_db.csv` (url, name_zh_tw, name_zh_cn, and sometimes aliases or image_urls).
 
-**Columns (common):** `key` (or `spirit`+`aspect_name` for aspects), `name`, `image_urls`, `name_zh_tw`, `name_zh_cn`
+### cards.csv (by type)
 
-- **key** — Internal id (e.g. spirit title, adversary key, scenario key).
-- **name** — English display name.
-- **image_urls** — Semicolon-separated image URLs (e.g. front;back).
-- **name_zh_tw** / **name_zh_cn** — Traditional / Simplified Chinese; users can search in 繁體中文 or 简体中文.
+| Script | Type | Updates |
+|--------|------|--------|
+| updateCardsEventsFromCardDb.js | Events | url, name_zh_tw/cn, aliases, aliases_zh_tw/cn |
+| updateCardsBlightFromCardDb.js | Blight | url, name_zh_tw, name_zh_cn |
+| updateCardsFearFromCardDb.js | Fear | url, name_zh_tw, name_zh_cn |
+| updateCardsMajorFromCardDb.js | Major | url, name_zh_tw, name_zh_cn |
+| updateCardsMinorFromCardDb.js | Minor | url, name_zh_tw, name_zh_cn |
+| updateCardsUniqueFromCardDb.js | Unique | url, name_zh_tw, name_zh_cn |
 
-**To generate the name CSVs** from the command source files, run from project root:
+### Name CSVs (panels: front;back or multiple URLs)
 
-```bash
-node exportNamesCsv.js
-```
+| Script | Target | Rule |
+|--------|--------|------|
+| updateAdversariesFromCardDb.js | adversaries.csv | Adversary rows; one image per row |
+| updateSpiritsFromCardDb.js | spirits.csv | Two rows per spirit: first = front, second = back → image_urls = front;back |
+| updateAspectsFromCardDb.js | aspects.csv | Aspect rows grouped by spirit + aspect; URLs joined as image_urls |
+| updateScenariosFromCardDb.js | scenarios.csv | Two rows per scenario: first = front, second = back → image_urls = front;back |
 
-This writes `data/spirits.csv`, `data/adversaries.csv`, `data/aspects.csv`, `data/scenarios.csv`, and `data/incarna.csv`. Fill `name_zh_tw` and `name_zh_cn` as needed.
+### Progression, extra, reminder
 
-**power_progression.csv** — One row per spirit with a power progression card. Columns: `key`, `name`, `url`, `name_zh_tw`, `name_zh_cn`. The `-progression` command looks up by spirit name (or Chinese) and sends the single image URL.
+| Script | Target | Rule |
+|--------|--------|------|
+| updatePowerProgressionFromCardDb.js | power_progression.csv | Progression rows; one url per spirit name |
+| updateExtraFromCardDb.js | extra.csv | Extra rows; builds file from Type=Extra |
+| updateReminderFromCardDb.js | reminder.csv | Reminder rows; same name = one card, first = front, second = back → image_urls = front;back |
 
-**extra.csv** — One row per spirit with an extra panel image. Columns: `key`, `name`, `url`, `name_zh_tw`, `name_zh_cn`. The `-extra (spirit)` command looks up by spirit name (or Chinese) and sends the image URL.
-
-**reminder.csv** — One row per reminder. Columns: `key`, `name`, `url`, `name_zh_tw`, `name_zh_cn`. The `-reminder (name)` command looks up by name (or Chinese) and sends the image URL.
-
-**To update power_progression.csv from card_db.csv** (Progression rows; matches by spirit name; sets `url`, `name_zh_tw`, `name_zh_cn`):
-
-```bash
-node scripts/updatePowerProgressionFromCardDb.js
-```
-
-**To update extra.csv from card_db.csv** (Extra rows; builds extra.csv from card_db Type=Extra; sets `key`, `name`, `url`, `name_zh_tw`, `name_zh_cn`):
-
-```bash
-node scripts/updateExtraFromCardDb.js
-```
-
-**To update spirits.csv from card_db.csv** (each spirit has two rows in card_db: first = front image, second = back image; sets `image_urls` = front;back, `name_zh_tw`, `name_zh_cn`):
+**Example (run any one):**
 
 ```bash
+node scripts/updateCardsMinorFromCardDb.js
 node scripts/updateSpiritsFromCardDb.js
+node scripts/updateReminderFromCardDb.js
 ```
 
-**To update aspects.csv from card_db.csv** (Aspect rows grouped by spirit + aspect name; multiple URLs per aspect joined as `image_urls`; sets `name_zh_tw`, `name_zh_cn`):
+---
 
-```bash
-node scripts/updateAspectsFromCardDb.js
-```
-
-**To update scenarios.csv from card_db.csv** (each scenario has two rows in card_db: first = front URL, second = back URL; sets `image_urls` = front;back, `name_zh_tw`, `name_zh_cn`):
-
-```bash
-node scripts/updateScenariosFromCardDb.js
-```
-
-**Commands that use these CSVs:**
+## Commands that use these CSVs
 
 | Command | CSV | Purpose |
 |--------|-----|--------|
-| `-spirit (front/back) [keywords]` | spirits.csv | Spirit panel image(s); Chinese + URL from CSV |
-| `-adversary [name]` | adversaries.csv | Adversary panel image; Chinese + URL from CSV |
-| `-aspect [spirit or aspect] [number]` | aspects.csv | Aspect card image(s); Chinese + URL from CSV |
-| `-scenario (front/back) [keywords]` | scenarios.csv | Scenario front/back image; Chinese + URL from CSV |
-| `-incarna [keyword] (front/back)` | incarna.csv | Incarna image; Chinese + URL from CSV |
-| `-aid [base, je, ni]` | player_aids.csv | Player aid card images; keywords: base, je, ni |
-| `-progression (spirit)` | power_progression.csv | Power progression image URL by spirit name; Chinese search via name_zh_tw, name_zh_cn |
-| `-extra (spirit)` | extra.csv | Extra panel image URL by spirit name; Chinese search via name_zh_tw, name_zh_cn |
-| `-reminder (name)` | reminder.csv | Reminder image URL by name; Chinese search via name_zh_tw, name_zh_cn |
-
-**Cards (power, minor, major, unique, blight, event, fear)** use `cards.csv` only (see above); they already support Chinese via `name_zh_tw` and `name_zh_cn` and return the single `url` from that CSV.
+| -power, -minor, -major, -unique, -blight, -event, -fear, -search | cards.csv | Card image URL; Chinese via name_zh_tw, name_zh_cn |
+| -spirit (front/back) [keywords] | spirits.csv | Spirit panel image(s) |
+| -adversary [name] | adversaries.csv | Adversary panel |
+| -aspect [spirit or aspect] [number] | aspects.csv | Aspect card image(s) |
+| -scenario (front/back) [keywords] | scenarios.csv | Scenario front/back |
+| -incarna [keyword] (front/back) | incarna.csv | Incarna image |
+| -aid [base \| je \| ni] | player_aids.csv | Player aid card images |
+| -progression (spirit) | power_progression.csv | Power progression image by spirit name |
+| -extra (spirit) | extra.csv | Extra panel image by spirit name |
+| -reminder (name) | reminder.csv | Reminder image(s); front;back when two-sided |

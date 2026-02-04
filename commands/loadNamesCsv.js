@@ -366,8 +366,8 @@ function loadExtraCsv() {
 }
 
 /**
- * Reminder CSV: key, name, url, name_zh_tw, name_zh_cn.
- * One image URL per reminder. Search by name or Chinese.
+ * Reminder CSV: key, name, image_urls, name_zh_tw, name_zh_cn.
+ * image_urls semicolon-separated (front;back for two-sided). Search by name or Chinese.
  */
 function loadReminderCsv() {
   const key = "reminder.csv";
@@ -398,11 +398,13 @@ function loadReminderCsv() {
   const header = parseCsvLine(lines[0]);
   const keyIdx = header.indexOf("key");
   const nameIdx = header.indexOf("name");
+  const urlsIdx = header.indexOf("image_urls");
   const urlIdx = header.indexOf("url");
   const twIdx = header.indexOf("name_zh_tw");
   const cnIdx = header.indexOf("name_zh_cn");
 
-  if (nameIdx === -1 || urlIdx === -1) {
+  const hasUrls = urlsIdx >= 0 || urlIdx >= 0;
+  if (nameIdx === -1 || !hasUrls) {
     cache[key] = result;
     return result;
   }
@@ -411,16 +413,20 @@ function loadReminderCsv() {
     const fields = parseCsvLine(lines[i]);
     const rowKey = keyIdx >= 0 ? (fields[keyIdx] || "").trim() : "";
     const name = (fields[nameIdx] || "").trim();
-    const url = (fields[urlIdx] || "").trim();
+    const imageUrlsStr = urlsIdx >= 0 ? (fields[urlsIdx] || "").trim() : (urlIdx >= 0 ? (fields[urlIdx] || "").trim() : "");
     const nameZhTw = twIdx >= 0 ? (fields[twIdx] || "").trim() : "";
     const nameZhCn = cnIdx >= 0 ? (fields[cnIdx] || "").trim() : "";
 
-    if (!name || !url) continue;
+    if (!name) continue;
+    const urls = parseImageUrls(imageUrlsStr);
+    if (urls.length === 0) continue;
 
     const row = {
       key: rowKey,
       name,
-      url,
+      image_urls: imageUrlsStr,
+      urls,
+      url: urls[0],
       name_zh_tw: nameZhTw,
       name_zh_cn: nameZhCn,
     };

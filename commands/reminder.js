@@ -27,6 +27,12 @@ module.exports = {
       const matched = getCardName(input, searchNames);
       if (matched) {
         const row = csv.nameToRow[matched];
+        if (row && row.urls && row.urls.length > 0) {
+          for (const url of row.urls) {
+            await msg.channel.send(url);
+          }
+          return;
+        }
         if (row && row.url) {
           return msg.channel.send(row.url);
         }
